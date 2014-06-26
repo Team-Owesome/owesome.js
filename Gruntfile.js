@@ -79,7 +79,7 @@ module.exports = function(grunt)
 
                 files:
                 [
-                    { expand: true, flatten: true, src: SRC_DIR + '/*.{vert,frag}', dest: INTERMEDIATE_DIR }
+                    { expand: true, flatten: true, src: SRC_DIR + '/**/*.{vert,frag}', dest: INTERMEDIATE_DIR }
                 ]
             }
         }
