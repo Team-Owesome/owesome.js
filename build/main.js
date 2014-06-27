@@ -1,6 +1,6 @@
 var lw = {};
-lw.SPRITE_VERT_SHADER_SRC = 'uniform mat4 projectionMatrix;attribute vec4 vertex;varying highp vec2 vTextureCoord;void main() { gl_Position = projectionMatrix * vec4(vertex.xy, 0, 1); vTextureCoord = vec2(vertex.zw);}';
 lw.SPRITE_FRAG_SHADER_SRC = 'uniform sampler2D texture;varying highp vec2 vTextureCoord;void main(){ gl_FragColor = texture2D(texture, vTextureCoord);}';
+lw.SPRITE_VERT_SHADER_SRC = 'uniform mat4 projectionMatrix;attribute vec4 vertex;varying highp vec2 vTextureCoord;void main() { gl_Position = projectionMatrix * vec4(vertex.xy, 0, 1); vTextureCoord = vec2(vertex.zw);}';
 "use strict";
 
 (function()
