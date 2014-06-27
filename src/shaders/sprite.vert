@@ -1,6 +1,5 @@
 // lw.SPRITE_VERT_SHADER_SRC
 
-
 attribute vec2 position;
 
 varying highp vec2 vTextureCoord;
