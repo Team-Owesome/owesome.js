@@ -40,6 +40,9 @@ gulp.task('concat', ['shaders'], function()
 		[
 			SRC_DIR + '/core.js',
 			INTERMEDIATE_DIR + '/**/*.{frag,vert}',
+			SRC_DIR + '/Texture.js',
+			SRC_DIR + '/TextureCache.js',
+			SRC_DIR + '/Renderer.js',
 			SRC_DIR + '/test.js'
 		])
 		.pipe(concat('main.js', 

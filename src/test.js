@@ -1,4 +1,28 @@
-"use strict";
+
+var test = new lw.Texture('res/tiles.png');
+var test2 = new lw.Texture('res/tiles2.png');
+
+var renderer = new lw.Renderer();
+
+setInterval(function()
+{
+    for (var i = 0; i < 1000; i++)
+    {
+        renderer.drawTexture(test, {x: Math.random() * 300, y: Math.random() * 300, width: 100, height: 100});
+    }
+
+    for (var i = 0; i < 100; i++)
+    {
+        renderer.drawTexture(test2, {x: Math.random() * 300, y: Math.random() * 300, width: 100, height: 100});
+    }
+
+
+    renderer.render();
+}, 1000 / 30);
+
+document.body.appendChild(renderer._domElement);
+
+
 
 (function()
 {
@@ -7,6 +31,7 @@
 
 
     canvas.style.backgroundColor = '#CCCCCC';
+    canvas.style.marginLeft = '10px';
 
     canvas.width = 300;
     canvas.height = 300;
@@ -42,7 +67,7 @@
     [
         2 / canvas.width, 0, 0, 0,
         0, -2 / canvas.height, 0, 0,
-        0, 0, 2 / 1, 0,
+        0, 0, 0, 0,
         -1, 1, 0, 1,
     ]);
 
@@ -115,25 +140,28 @@
         gl.bindTexture(gl.TEXTURE_2D, null);
     };
 
-    var floatBuffer = new Float32Array(10000 * 24);
+    var floatBuffer = new Float32Array(10 * 24);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
     gl.bufferData(gl.ARRAY_BUFFER, 
                       floatBuffer, 
                       gl.DYNAMIC_DRAW);
 
+    
+
+        for (var i = 0; i < 10; i++)
+        {
+            setBuffer(floatBuffer, i,
+                      Math.random() * 300, Math.random() * 300,
+                      Math.random() * 64, Math.random() * 64)
+        }
     window.requestAnimationFrame(function render()
     {
         window.requestAnimationFrame(render);
 
         if (!image.complete) return;
 
-        for (var i = 0; i < 10000; i++)
-        {
-            setBuffer(floatBuffer, i,
-                      Math.random() * 300, Math.random() * 300,
-                      Math.random() * 64, Math.random() * 64)
-        }
+            
 
         gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
         gl.bufferSubData(gl.ARRAY_BUFFER, 0, floatBuffer);
@@ -145,7 +173,7 @@
         gl.bindTexture(gl.TEXTURE_2D, texture);
         gl.uniform1i(gl.getUniformLocation(program, "texture"), 0);
 
-        gl.drawArrays(gl.TRIANGLES, 0, 6 * 10000);
+        gl.drawArrays(gl.TRIANGLES, 0, 6 * 10);
     });
 
     document.body.appendChild(canvas);
