@@ -1,0 +1,4 @@
+ow.Rectangle = function()
+{
+
+};

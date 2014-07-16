@@ -4,6 +4,7 @@ var replace = require('gulp-replace');
 var concat = require('gulp-concat');
 var watch = require('gulp-watch');
 var connect = require('gulp-connect');
+var mocha = require('gulp-mocha-phantomjs');
 var path = require('path');
 
 var SRC_DIR = 'src';
@@ -43,6 +44,8 @@ gulp.task('concat', ['shaders'], function()
 			SRC_DIR + '/Texture.js',
 			SRC_DIR + '/TextureCache.js',
 			SRC_DIR + '/Renderer.js',
+			SRC_DIR + '/WebGlRenderer.js',
+			SRC_DIR + '/Vector.js',
 			SRC_DIR + '/test.js'
 		])
 		.pipe(concat('main.js', 

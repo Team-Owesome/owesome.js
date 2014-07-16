@@ -1,4 +1,13 @@
-lw.Renderer = function()
+ow.Renderer = function()
+{
+	this.domElement = null;
+};
+
+ow.Renderer.prototype.drawSprite = function(sprite) {};
+ow.Renderer.prototype.draw = function() {};
+ow.Renderer.prototype.clear = function() {};
+
+/*lw.Renderer = function()
 {
 	this._domElement = document.createElement('canvas');
 
@@ -18,7 +27,7 @@ lw.Renderer = function()
 
 	var gl = this._context;
 
-	this._floatBuffer = new Float32Array(1000 * 24);
+	this._floatBuffer = new Float32Array(5000 * 24);
 	this._vertexBuffer = gl.createBuffer();
 
 
@@ -124,6 +133,9 @@ lw.Renderer.prototype.render = function()
 	    gl.bindTexture(gl.TEXTURE_2D, glTexture);
 	    gl.uniform1i(this._textureLocation, 0);
 
+	    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+	    gl.enable(gl.BLEND);
+
 		for (drawCallIndex in drawBatch.drawCalls)
 		{
 			drawCall = drawBatch.drawCalls[drawCallIndex];
@@ -172,4 +184,4 @@ lw.Renderer.prototype.render = function()
 
 	this._drawBatches = [];
 	this._currentZIndex = 0;
-};
+};*/

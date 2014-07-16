@@ -1,12 +1,11 @@
 "use strict";
+var ow = {};
 var lw = {};
-lw.SPRITE_VERT_SHADER_SRC = '/*uniform mat4 projectionMatrix;attribute vec4 vertex;varying highp vec2 vTextureCoord;void main() { gl_Position = projectionMatrix * vec4(vertex.xy, 0, 1); vTextureCoord = vec2(vertex.zw);}*/uniform mat4 projectionMatrix;attribute vec4 vertex;varying highp vec2 vTextureCoord;void main() { gl_Position = projectionMatrix * vec4(vertex.xy, 104440, 1); vTextureCoord = vec2(vertex.zw);}';
 lw.SPRITE_FRAG_SHADER_SRC = '/*uniform sampler2D texture;varying highp vec2 vTextureCoord;void main(){ gl_FragColor = texture2D(texture, vTextureCoord);}*/uniform sampler2D texture;varying highp vec2 vTextureCoord;void main(){ gl_FragColor = texture2D(texture, vTextureCoord);}';
-lw.TextureId = 0;
-
-lw.Texture = function(imageOrSrc)
+lw.SPRITE_VERT_SHADER_SRC = '/*uniform mat4 projectionMatrix;attribute vec4 vertex;varying highp vec2 vTextureCoord;void main() { gl_Position = projectionMatrix * vec4(vertex.xy, 0, 1); vTextureCoord = vec2(vertex.zw);}*/uniform mat4 projectionMatrix;attribute vec4 vertex;varying highp vec2 vTextureCoord;void main() { gl_Position = projectionMatrix * vec4(vertex.xy, 0, 1); vTextureCoord = vec2(vertex.zw);}';
+ow.Texture = function(imageOrSrc)
 {
-	this._id = lw.Texture.CurrentId++;
+	this._id = ow.Texture.CurrentId++;
 
 	if (typeof imageOrSrc === 'string')
 	{
@@ -41,17 +40,17 @@ lw.Texture = function(imageOrSrc)
 	}
 };
 
-lw.Texture.prototype.getId = function()
+ow.Texture.prototype.getId = function()
 {
 	return this._id;
 };
 
-lw.Texture.prototype.getImage = function()
+ow.Texture.prototype.getImage = function()
 {
 	return this._internalImage;
 }
 
-lw.Texture.CurrentId = 0; 
+ow.Texture.CurrentId = 0; 
 lw.TextureCache = function(context)
 {
 	this._glTextures = [];
@@ -76,11 +75,22 @@ lw.TextureCache.prototype.getGlTexture = function(texture)
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
         gl.generateMipmap(gl.TEXTURE_2D);
         gl.bindTexture(gl.TEXTURE_2D, null);
+
+        this._glTextures[texture.getId()] = glTexture;
 	}
 
 	return glTexture;
 };
-lw.Renderer = function()
+ow.Renderer = function()
+{
+	this.domElement = null;
+};
+
+ow.Renderer.prototype.drawSprite = function(sprite) {};
+ow.Renderer.prototype.draw = function() {};
+ow.Renderer.prototype.clear = function() {};
+
+/*lw.Renderer = function()
 {
 	this._domElement = document.createElement('canvas');
 
@@ -100,7 +110,7 @@ lw.Renderer = function()
 
 	var gl = this._context;
 
-	this._floatBuffer = new Float32Array(1000 * 24);
+	this._floatBuffer = new Float32Array(5000 * 24);
 	this._vertexBuffer = gl.createBuffer();
 
 
@@ -206,6 +216,9 @@ lw.Renderer.prototype.render = function()
 	    gl.bindTexture(gl.TEXTURE_2D, glTexture);
 	    gl.uniform1i(this._textureLocation, 0);
 
+	    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+	    gl.enable(gl.BLEND);
+
 		for (drawCallIndex in drawBatch.drawCalls)
 		{
 			drawCall = drawBatch.drawCalls[drawCallIndex];
@@ -254,30 +267,144 @@ lw.Renderer.prototype.render = function()
 
 	this._drawBatches = [];
 	this._currentZIndex = 0;
+};*/
+ow.WebGlRenderer = function()
+{
+	this.domElement = document.createElement('canvas');
 };
 
-var test = new lw.Texture('res/tiles.png');
-var test2 = new lw.Texture('res/tiles2.png');
+ow.WebGlRenderer.prototype = Object.create(ow.Renderer.prototype);
+ow.WebGlRenderer.prototype.constructor = ow.WebGlRenderer;
 
-var renderer = new lw.Renderer();
-
-setInterval(function()
+ow.WebGlRenderer.prototype.drawSprite = function(sprite)
 {
-    for (var i = 0; i < 1000; i++)
+
+};
+
+ow.WebGlRenderer.prototype.draw = function()
+{
+
+};
+
+ow.WebGlRenderer.prototype.clear = function()
+{
+
+};
+ow.Vector = function(x, y)
+{
+	this.x = Number(x || 0);
+	this.y = Number(y || (x || 0));
+};
+
+ow.Vector.prototype.toArray = function()
+{
+	return [this.x, this.y];
+};
+
+ow.Vector.prototype.toNativeArray = function()
+{
+	var array = new Float32Array(2);
+
+	array[0] = this.x;
+	array[1] = this.y;
+
+	return array;
+};
+
+ow.Vector.prototype.clone = function()
+{
+	return new ow.Vector(this.x, this.y);
+};
+
+ow.Vector.prototype.add = function(vectorOrNumber, optionalY)
+{
+	if (vectorOrNumber instanceof ow.Vector)
+	{
+		this.x += vectorOrNumber.x;
+		this.y += vectorOrNumber.y;
+	}
+	else
+	{
+		this.x += Number(vectorOrNumber);
+		this.y += Number(optionalY || vectorOrNumber);
+	}
+
+	return this;
+};
+
+ow.Vector.prototype.addition = function(vectorOrNumber, optionalY)
+{
+	return this.clone().add(vectorOrNumber, optionalY);
+};
+
+ow.Vector.prototype.substract = function(vectorOrNumber, optionalY)
+{
+	if (vectorOrNumber instanceof ow.Vector)
+	{
+		this.x -= vectorOrNumber.x;
+		this.y -= vectorOrNumber.y;
+	}
+	else
+	{
+		this.x -= Number(vectorOrNumber);
+		this.y -= Number(optionalY || vectorOrNumber);
+	}
+
+	return this;
+};
+
+ow.Vector.prototype.substraction = function(vectorOrNumber, optionalY)
+{
+	return this.clone().substract(vectorOrNumber, optionalY);
+};
+
+ow.Vector.prototype.multiply = function(vectorOrNumber, optionalY)
+{
+	if (vectorOrNumber instanceof ow.Vector)
+	{
+		this.x *= vectorOrNumber.x;
+		this.y *= vectorOrNumber.y;
+	}
+	else
+	{
+		this.x *= Number(vectorOrNumber);
+		this.y *= Number(optionalY || vectorOrNumber);
+	}
+
+	return this;
+};
+
+ow.Vector.prototype.multiplication = function(vectorOrNumber, optionalY)
+{
+	return this.clone().multiplication(vectorOrNumber, optionalY);
+};
+
+var test = new ow.Texture('res/tiles.png');
+var test2 = new ow.Texture('res/tiles2.png');
+
+var renderer = new ow.WebGlRenderer();
+
+var draw = function()
+{
+    window.requestAnimationFrame(draw);
+
+    /*for (var i = 0; i < 5000; i++)
     {
         renderer.drawTexture(test, {x: Math.random() * 300, y: Math.random() * 300, width: 100, height: 100});
-    }
+    }*/
 
-    for (var i = 0; i < 100; i++)
+    /*for (var i = 0; i < 1000; i++)
     {
         renderer.drawTexture(test2, {x: Math.random() * 300, y: Math.random() * 300, width: 100, height: 100});
-    }
+    }*/
 
 
-    renderer.render();
-}, 1000 / 30);
+    renderer.draw();
+};
 
-document.body.appendChild(renderer._domElement);
+setTimeout(draw, 1000);
+
+document.body.appendChild(renderer.domElement);
 
 
 
@@ -412,7 +539,7 @@ document.body.appendChild(renderer._domElement);
                       Math.random() * 300, Math.random() * 300,
                       Math.random() * 64, Math.random() * 64)
         }
-    window.requestAnimationFrame(function render()
+    /*window.requestAnimationFrame(function render()
     {
         window.requestAnimationFrame(render);
 
@@ -431,7 +558,7 @@ document.body.appendChild(renderer._domElement);
         gl.uniform1i(gl.getUniformLocation(program, "texture"), 0);
 
         gl.drawArrays(gl.TRIANGLES, 0, 6 * 10);
-    });
+    });*/
 
     document.body.appendChild(canvas);
-})();
+});

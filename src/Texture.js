@@ -1,8 +1,6 @@
-lw.TextureId = 0;
-
-lw.Texture = function(imageOrSrc)
+ow.Texture = function(imageOrSrc)
 {
-	this._id = lw.Texture.CurrentId++;
+	this._id = ow.Texture.CurrentId++;
 
 	if (typeof imageOrSrc === 'string')
 	{
@@ -37,14 +35,14 @@ lw.Texture = function(imageOrSrc)
 	}
 };
 
-lw.Texture.prototype.getId = function()
+ow.Texture.prototype.getId = function()
 {
 	return this._id;
 };
 
-lw.Texture.prototype.getImage = function()
+ow.Texture.prototype.getImage = function()
 {
 	return this._internalImage;
 }
 
-lw.Texture.CurrentId = 0; 
+ow.Texture.CurrentId = 0; 

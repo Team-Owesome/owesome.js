@@ -1,26 +1,30 @@
 
-var test = new lw.Texture('res/tiles.png');
-var test2 = new lw.Texture('res/tiles2.png');
+var test = new ow.Texture('res/tiles.png');
+var test2 = new ow.Texture('res/tiles2.png');
 
-var renderer = new lw.Renderer();
+var renderer = new ow.WebGlRenderer();
 
-setInterval(function()
+var draw = function()
 {
-    for (var i = 0; i < 1000; i++)
+    window.requestAnimationFrame(draw);
+
+    /*for (var i = 0; i < 5000; i++)
     {
         renderer.drawTexture(test, {x: Math.random() * 300, y: Math.random() * 300, width: 100, height: 100});
-    }
+    }*/
 
-    for (var i = 0; i < 100; i++)
+    /*for (var i = 0; i < 1000; i++)
     {
         renderer.drawTexture(test2, {x: Math.random() * 300, y: Math.random() * 300, width: 100, height: 100});
-    }
+    }*/
 
 
-    renderer.render();
-}, 1000 / 30);
+    renderer.draw();
+};
 
-document.body.appendChild(renderer._domElement);
+setTimeout(draw, 1000);
+
+document.body.appendChild(renderer.domElement);
 
 
 
@@ -155,7 +159,7 @@ document.body.appendChild(renderer._domElement);
                       Math.random() * 300, Math.random() * 300,
                       Math.random() * 64, Math.random() * 64)
         }
-    window.requestAnimationFrame(function render()
+    /*window.requestAnimationFrame(function render()
     {
         window.requestAnimationFrame(render);
 
@@ -174,7 +178,7 @@ document.body.appendChild(renderer._domElement);
         gl.uniform1i(gl.getUniformLocation(program, "texture"), 0);
 
         gl.drawArrays(gl.TRIANGLES, 0, 6 * 10);
-    });
+    });*/
 
     document.body.appendChild(canvas);
-})();
+});
