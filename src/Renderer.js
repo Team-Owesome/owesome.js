@@ -1,11 +1,26 @@
-ow.Renderer = function()
+(function()
 {
-	this.domElement = null;
-};
+	var Renderer = function()
+	{
+		this.domElement = null;
+	};
 
-ow.Renderer.prototype.drawSprite = function(sprite) {};
-ow.Renderer.prototype.draw = function() {};
-ow.Renderer.prototype.clear = function() {};
+	Renderer.prototype.drawTexture = function(texture, textureRect, transformMatrix) {};
+	Renderer.prototype.draw = function(drawable)
+	{
+		if (!(drawable instanceof ow.Drawable))
+		{
+			throw TypeError('drawable is not of type ow.Drawable.');
+		}
+
+		drawable.draw(this);
+	};
+
+	Renderer.prototype.clear = function() {};
+
+	ow.Renderer = Renderer;
+})();
+
 
 /*lw.Renderer = function()
 {

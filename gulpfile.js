@@ -4,6 +4,8 @@ var replace = require('gulp-replace');
 var concat = require('gulp-concat');
 var watch = require('gulp-watch');
 var connect = require('gulp-connect');
+var uglify = require('gulp-uglifyjs');
+var rename = require('gulp-rename');
 var mocha = require('gulp-mocha-phantomjs');
 var path = require('path');
 
@@ -35,7 +37,17 @@ gulp.task('shaders', ['clean'], function()
 		.pipe(gulp.dest(INTERMEDIATE_DIR));
 });
 
-gulp.task('concat', ['shaders'], function()
+gulp.task('copy', ['shaders'], function()
+{
+	return gulp.src(
+		[
+			SRC_DIR + '/**/*.js',
+			INTERMEDIATE_DIR + '/**/*.{frag,vert}'
+		], { base: './' })
+		.pipe(gulp.dest(BUILD_DIR))
+});
+
+gulp.task('concat', ['copy'], function()
 {
 	return gulp.src(
 		[
@@ -43,15 +55,21 @@ gulp.task('concat', ['shaders'], function()
 			INTERMEDIATE_DIR + '/**/*.{frag,vert}',
 			SRC_DIR + '/Texture.js',
 			SRC_DIR + '/TextureCache.js',
+			SRC_DIR + '/Drawable.js',
 			SRC_DIR + '/Renderer.js',
 			SRC_DIR + '/WebGlRenderer.js',
+			SRC_DIR + '/Stage.js',
+			SRC_DIR + '/Sprite.js',
+			SRC_DIR + '/Matrix.js',
 			SRC_DIR + '/Vector.js',
+			SRC_DIR + '/Rectangle.js',
 			SRC_DIR + '/test.js'
 		])
-		.pipe(concat('main.js', 
+		/*.pipe(concat('main.js', 
 		{
 			sourceRoot: '../'
-		}))
+		}))*/
+		.pipe(uglify('main.min.js', { outSourceMap: true }))
 		.pipe(gulp.dest(BUILD_DIR))
 		.pipe(connect.reload());
 });

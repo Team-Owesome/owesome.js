@@ -3,10 +3,22 @@ var test = new ow.Texture('res/tiles.png');
 var test2 = new ow.Texture('res/tiles2.png');
 
 var renderer = new ow.WebGlRenderer();
+var sprite = new ow.Sprite(null, new ow.Rectangle(0, 0, 20, 20), new ow.Vector(0, 0));
+
+
+var context = renderer.domElement.getContext('2d');
+var matrix = new ow.Matrix();
 
 var draw = function()
 {
     window.requestAnimationFrame(draw);
+
+    sprite.rotation += 5.0;
+    sprite.position.x += 0.8;
+    sprite.scale.x += 0.1;
+
+    renderer.clear();
+
 
     /*for (var i = 0; i < 5000; i++)
     {
@@ -18,11 +30,18 @@ var draw = function()
         renderer.drawTexture(test2, {x: Math.random() * 300, y: Math.random() * 300, width: 100, height: 100});
     }*/
 
+    var prevTime = Date.now();
 
-    renderer.draw();
+    for (var i = 0; i < 2000; i++)
+    {
+        sprite.position.y = Math.random() * 200;
+        renderer.draw(sprite);
+    }
+
+    var duration = Date.now() - prevTime;
 };
 
-setTimeout(draw, 1000);
+draw();
 
 document.body.appendChild(renderer.domElement);
 

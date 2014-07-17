@@ -1,48 +1,53 @@
-ow.Texture = function(imageOrSrc)
+(function()
 {
-	this._id = ow.Texture.CurrentId++;
-
-	if (typeof imageOrSrc === 'string')
+	var Texture = function(imageOrSrc)
 	{
-		this._internalImage = new Image();
-		this._internalImage.src = imageOrSrc;
-	}
-	else if (imageOrSrc instanceof Image)
-	{
-		this._internalImage = imageOrSrc;
-	}
-	else
-	{
-		throw new TypeError('Expected Image or String!');
-	}
+		this._id = Texture.CurrentId++;
 
-	this.loaded = this._internalImage.complete;
-
-	var self = this;
-
-	if (!this.loaded)
-	{
-		this._internalImage.addEventListener('error', function()
+		if (typeof imageOrSrc === 'string')
 		{
-			throw new Error("Image coulnd't be loaded!");
-		});
-
-		this._internalImage.addEventListener('load', function()
+			this._internalImage = new Image();
+			this._internalImage.src = imageOrSrc;
+		}
+		else if (imageOrSrc instanceof Image)
 		{
-			console.debug('Texture #' + self._id + ' "' + self._internalImage.src + '" loaded...');
-			self.loaded = true;
-		});
+			this._internalImage = imageOrSrc;
+		}
+		else
+		{
+			throw new TypeError('Expected Image or String!');
+		}
+
+		this.loaded = this._internalImage.complete;
+
+		var self = this;
+
+		if (!this.loaded)
+		{
+			this._internalImage.addEventListener('error', function()
+			{
+				throw new Error("Image coulnd't be loaded!");
+			});
+
+			this._internalImage.addEventListener('load', function()
+			{
+				console.debug('Texture #' + self._id + ' "' + self._internalImage.src + '" loaded...');
+				self.loaded = true;
+			});
+		}
+	};
+
+	Texture.prototype.getId = function()
+	{
+		return this._id;
+	};
+
+	Texture.prototype.getImage = function()
+	{
+		return this._internalImage;
 	}
-};
 
-ow.Texture.prototype.getId = function()
-{
-	return this._id;
-};
+	Texture.CurrentId = 0;
 
-ow.Texture.prototype.getImage = function()
-{
-	return this._internalImage;
-}
-
-ow.Texture.CurrentId = 0; 
+	ow.Texture = Texture;
+})();
