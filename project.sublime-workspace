@@ -1,0 +1,438 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"mu",
+				"multiplyByArray"
+			],
+			[
+				"con",
+				"console"
+			],
+			[
+				"to",
+				"topRight"
+			],
+			[
+				"sca",
+				"scaleY"
+			],
+			[
+				"scal",
+				"scaleY"
+			],
+			[
+				"rota",
+				"rotation"
+			],
+			[
+				"top",
+				"topLeft"
+			],
+			[
+				"te",
+				"textureRect"
+			],
+			[
+				"ro",
+				"rotation"
+			],
+			[
+				"do",
+				"domElement"
+			],
+			[
+				"tex",
+				"textureRect"
+			],
+			[
+				"tran",
+				"translate"
+			],
+			[
+				"textur",
+				"textureRect"
+			],
+			[
+				"draw",
+				"drawable"
+			],
+			[
+				"text",
+				"textureRect"
+			],
+			[
+				"tx",
+				"textureRect"
+			],
+			[
+				"sub",
+				"substract"
+			],
+			[
+				"ve",
+				"vectorB"
+			],
+			[
+				"vec",
+				"vectorA"
+			],
+			[
+				"dra",
+				"drawBatch"
+			],
+			[
+				"gl",
+				"glTexture"
+			],
+			[
+				"_i",
+				"_internalImage"
+			],
+			[
+				"proto",
+				"prototype"
+			],
+			[
+				"in",
+				"_internalImage"
+			],
+			[
+				"ver",
+				"vertices"
+			],
+			[
+				"vertex",
+				"vertexShader"
+			],
+			[
+				"verte",
+				"vertexShader"
+			],
+			[
+				"RELE",
+				"RELEASE_NOTES"
+			],
+			[
+				"ca",
+				"cameraLight"
+			],
+			[
+				"fear",
+				"fearParticle"
+			],
+			[
+				"move",
+				"moveToRandomParticle"
+			],
+			[
+				"mov",
+				"moveToRandomParticle"
+			],
+			[
+				"par",
+				"particleShapeMesh"
+			],
+			[
+				"nor",
+				"normal"
+			],
+			[
+				"norm",
+				"normal"
+			],
+			[
+				"fea",
+				"fearParticles"
+			],
+			[
+				"fearPar",
+				"fearParticles"
+			],
+			[
+				"normal",
+				"normalize"
+			],
+			[
+				"rand",
+				"randomVertex"
+			],
+			[
+				"Twee",
+				"TWEEN"
+			],
+			[
+				"Fea",
+				"FearBrickMesh"
+			],
+			[
+				"particl",
+				"particleCount"
+			],
+			[
+				"partic",
+				"particleCount"
+			],
+			[
+				"part",
+				"particleShapeGeometry"
+			],
+			[
+				"load",
+				"loadingManager"
+			],
+			[
+				"prot",
+				"prototype"
+			],
+			[
+				"bac",
+				"background-color"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 47.0,
+		"selected_items":
+		[
+			[
+				"install",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 449.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by) "
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/till/Desktop/development/projects/smallfastcanvas/src/TextureCache.js",
+		"/Users/till/Desktop/development/projects/smallfastcanvas/src/Rectangle.js",
+		"/Users/till/Desktop/development/projects/smallfastcanvas/src/Sprite.js",
+		"/Users/till/Desktop/development/projects/smallfastcanvas/src/Vector.js",
+		"/Users/till/Desktop/development/projects/smallfastcanvas/src/WebGlRenderer.js",
+		"/Users/till/Desktop/development/projects/smallfastcanvas/src/Renderer.js",
+		"/Users/till/Desktop/development/projects/smallfastcanvas/src/Matrix.js",
+		"/Users/till/Desktop/development/projects/smallfastcanvas/src/shaders/sprite.vert",
+		"/Users/till/Desktop/development/projects/smallfastcanvas/src/shaders/sprite.frag",
+		"/Users/till/Desktop/development/projects/smallfastcanvas/src/Texture.js",
+		"/Users/till/Desktop/development/projects/smallfastcanvas/src/Drawable.js",
+		"/Users/till/Desktop/development/projects/smallfastcanvas/src/test.js",
+		"/Users/till/Desktop/development/projects/smallfastcanvas/build/main.min.js",
+		"/Users/till/Desktop/development/projects/smallfastcanvas/gulpfile.js",
+		"/Users/till/Desktop/development/projects/smallfastcanvas/src/Stage.js",
+		"/Users/till/Desktop/development/projects/smallfastcanvas/test/VectorTest.js",
+		"/Users/till/Desktop/development/projects/smallfastcanvas/test/test.html",
+		"/Users/till/Desktop/development/projects/smallfastcanvas/build/main.js",
+		"/Users/till/Desktop/development/projects/smallfastcanvas/test/main.min.js",
+		"/Users/till/Desktop/development/projects/smallfastcanvas/package.json",
+		"/Users/till/Desktop/development/projects/smallfastcanvas/src/core.js",
+		"/Users/till/Desktop/development/projects/smallfastcanvas/build/main.min.js.map",
+		"/Users/till/Desktop/development/projects/smallfastcanvas/index.html",
+		"/Users/till/Desktop/development/projects/smallfastcanvas/test/test.js",
+		"/Users/till/Downloads/CrabSource/Unity/Assets/3rdParty/Lidgren.Network/Encryption/NetAESEncryption.cs",
+		"/Volumes/www2/face_your_fears/mockup/.htaccess",
+		"/Users/till/Desktop/development/projects/smallfastcanvas/node_modules/gulp-connect/package.json",
+		"/Users/till/Desktop/development/projects/smallfastcanvas/src/fu.js",
+		"/Users/till/Desktop/development/projects/smallfastcanvas/src/shaders/test.frag",
+		"/Users/till/Desktop/development/projects/smallfastcanvas/src/shaders/test.fra",
+		"/Users/till/Desktop/development/projects/smallfastcanvas/test",
+		"/Users/till/Desktop/development/projects/smallfastcanvas/src/shaders/test.vert",
+		"/Users/till/Desktop/development/projects/smallfastcanvas/Gruntfile.js",
+		"/Users/till/Desktop/development/ma/smallfastcanvas/src/test.js",
+		"/Users/till/Desktop/development/projects/smallfastcanvas/intermediate/shaders/sprite.vert",
+		"/Users/till/Desktop/development/projects/smallfastcanvas/intermediate/shaders/sprite.frag",
+		"/Users/till/Desktop/development/ma/smallfastcanvas/src/core.js",
+		"/Users/till/Desktop/development/ma/smallfastcanvas/src/shaders/sprite.frag",
+		"/Users/till/Desktop/development/ma/smallfastcanvas/src/shaders/sprite.vert",
+		"/Users/till/Desktop/development/projects/untitled folder/test/test.glsl",
+		"/Users/till/Desktop/development/projects/face-your-fears/README.md",
+		"/Users/till/Downloads/travis_vorlage 2/travis/script.sh",
+		"/Users/till/Desktop/development/projects/companys-mobile-shop-ios/podfile",
+		"/Users/till/Desktop/development/projects/curiator-ios/podfile",
+		"/Users/till/Desktop/development/projects/__face-your-fears/package.json",
+		"/Users/till/Desktop/development/projects/face-your-fears/frontend/.gitignore",
+		"/Volumes/www2/swisstravelsystem/swiss_pass_banner/test.html",
+		"/Users/till/Desktop/development/projects/__face-your-fears/bowercopy.json",
+		"/Users/till/Desktop/development/projects/__face-your-fears/bower.json",
+		"/Users/till/Desktop/development/projects/face-your-fears/backend/dependencies/common.txt",
+		"/Users/till/Desktop/development/projects/face-your-fears-backend/dependencies/common.txt",
+		"/Volumes/www2/swisstravelsystem/swiss_pass_banner/300x250_en.html",
+		"/Volumes/www2/swisstravelsystem/swiss_pass_banner/728x90_en.html",
+		"/Volumes/www2/swisstravelsystem/swiss_pass_banner/728x90_en.swf",
+		"/Volumes/www2/swisstravelsystem/swiss_pass_banner/160x600_en.html",
+		"/Users/till/Desktop/development/projects/curiator-ios/.travis.yml",
+		"/Users/till/Desktop/development/projects/companys-mobile-shop-ios/README.md",
+		"/Users/till/Desktop/development/projects/curiator-ios/README.md",
+		"/Users/till/Desktop/development/projects/curiator-ios/travis/script.sh",
+		"/Users/till/Library/Caches/appCode30/DerivedData/CompanysMobileShop-d221bd74/Build/Products/Debug-iphonesimulator/STAGING COMPANYS.app/translation.json",
+		"/Users/till/Downloads/android-gif-drawable-1.0.8/AndroidManifest.xml",
+		"/Users/till/Desktop/development/projects/fixxpunkt-watson-android/ext/android-gif-drawable-master/gradle.properties",
+		"/Users/till/Desktop/development/projects/fixxpunkt-watson-android/ext/android-gif-drawable-master/build.gradle",
+		"/Users/till/Desktop/development/projects/fixxpunkt-watson-android/ext/android-gif-drawable-master/src/main/AndroidManifest.xml",
+		"/Users/till/Desktop/development/projects/face-your-fears/src/js/threejs_extras/controls/OrbitControls.js",
+		"/Users/till/Desktop/development/projects/face-your-fears/build/index.html",
+		"/Users/till/Desktop/development/projects/face-your-fears/build/intermediate/templates/face_your_fears/templates.js",
+		"/Users/till/Desktop/development/projects/face-your-fears/src/js/core/act.js",
+		"/Users/till/Desktop/development/projects/face-your-fears/src/js/face_your_fears/templates/loader.hbs",
+		"/Users/till/Desktop/development/projects/face-your-fears/src/js/acts/main_act.js"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"renderer",
+			"a\\[ow.Matrix\\.ROW_([0-9]+?)\\]",
+			"a\\[ow.Matrix\\.ROW_([0-9]+)\\]",
+			"a[ow.Matrix.ROW_11]",
+			"Matrix",
+			"Rectangle",
+			"ow.Rectangle",
+			"ow.",
+			".should.equal",
+			".should.",
+			"viewport",
+			"backgr",
+			"object",
+			"quat",
+			"scope",
+			"mouse",
+			"geometry"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": true,
+		"replace_history":
+		[
+			"$1",
+			"",
+			".should.be.equal",
+			".should.be."
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"project": "project.sublime-project",
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 236.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

@@ -108,6 +108,11 @@
 		return this.multiplyByArray(matrix.array);
 	};
 
+	Matrix.Identity = function()
+	{
+		return new Matrix();
+	};
+
 	Matrix.Translation = function(x, y)
 	{
 		return new Matrix([1, 0, x,
