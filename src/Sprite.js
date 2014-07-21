@@ -27,7 +27,6 @@
 	Sprite.prototype.draw = function(renderer)
 	{
 		this._matrix.identity();
-
 		this._matrix.translate(this.position.x, this.position.y);
 		
 		if (this.rotation != 0) this._matrix.rotate(this.rotation * (Math.PI / 180));

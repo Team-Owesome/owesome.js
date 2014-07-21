@@ -9,5 +9,10 @@
 		this.height = height;
 	};
 
+	Rectangle.prototype.copy = function()
+	{
+		return new Rectangle(this.x, this.y, this.width, this.height);
+	};
+
 	ow.Rectangle = Rectangle;
 })();

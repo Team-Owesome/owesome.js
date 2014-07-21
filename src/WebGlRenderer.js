@@ -1,5 +1,8 @@
 (function()
 {
+    var STRIDE = Float32Array.BYTES_PER_ELEMENT * 4;
+    var TEX_COORD_OFFSET = Float32Array.BYTES_PER_ELEMENT * 2;
+
     var RenderPass = function(context)
     {
         this.context = context;
@@ -66,9 +69,10 @@
         gl.linkProgram(program);
         gl.useProgram(program);
 
-        this._positionLocation = gl.getAttribLocation(program, "vertex");
+        this._positionLocation = gl.getAttribLocation(program, 'vertex');
+        this._texCoordLocation = gl.getAttribLocation(program, 'texCoord');
         this._matrixLocation = gl.getUniformLocation(program, 'projectionMatrix');
-        this._textureLocation = gl.getUniformLocation(program, "texture");
+        this._textureLocation = gl.getUniformLocation(program, 'texture');
 
         gl.uniformMatrix4fv(this._matrixLocation, false,
         [
@@ -79,7 +83,7 @@
         ]);
 
         this._intBuffer = new Uint16Array(5000 * 4);
-        this._floatBuffer = new Float32Array(5000 * 8);
+        this._floatBuffer = new Float32Array(5000 * 16);
 
         this._indexBuffer = gl.createBuffer();
         this._vertexBuffer = gl.createBuffer();
@@ -108,17 +112,16 @@
 
         if (!session)
         {
-            session = [];
+            session = { texture: texture, sprites: [] };
             this.renderSession[textureId] = session;
         }
 
         var obj = {};
 
-        obj.texture = texture;
-        obj.textureRect = textureRect;
-        obj.transformMatrix = transformMatrix;
+        obj.textureRect = textureRect.copy();
+        obj.transformMatrix = transformMatrix.copy();
 
-        session.push(obj);
+        session.sprites.push(obj);
 
         /*this.context.save();
 
@@ -151,20 +154,23 @@
 
         var i = 0;
 
+        var texture = null;
+
         for (id in this.renderSession)
         {
             session = this.renderSession[id];
             drawIndex = 0;
 
-            for (i = 0; i < session.length; ++i)
-            {
-                var obj = session[i];
+            texture = session.texture;
 
-                var texture = obj.texture;
+            for (i = 0; i < session.sprites.length; ++i)
+            {
+                var obj = session.sprites[i];
+
                 var textureRect = obj.textureRect;
                 var transformMatrix = obj.transformMatrix;
 
-                var indexOffset = drawIndex * 8;
+                var indexOffset = drawIndex * 16;
                 var blaIndexOffset = drawIndex * 6;
                 var intIndexOffset = drawIndex * 4;
 
@@ -185,17 +191,37 @@
                 this.bottomRight.applyMatrix(transformMatrix);
                 this.bottomLeft.applyMatrix(transformMatrix);
 
+
+                var top = textureRect.y / texture.width;
+                var left = textureRect.x / texture.height;
+
+                var right = (textureRect.x + textureRect.width) / texture.width;
+                var bottom = (textureRect.y + textureRect.height) / texture.height;
+
+
                 this._floatBuffer[indexOffset + 0] = this.topLeft.x;
                 this._floatBuffer[indexOffset + 1] = this.topLeft.y;
 
-                this._floatBuffer[indexOffset + 2] = this.topRight.x;
-                this._floatBuffer[indexOffset + 3] = this.topRight.y;
+                this._floatBuffer[indexOffset + 2] = left;
+                this._floatBuffer[indexOffset + 3] = top;
 
-                this._floatBuffer[indexOffset + 4] = this.bottomRight.x;
-                this._floatBuffer[indexOffset + 5] = this.bottomRight.y;
+                this._floatBuffer[indexOffset + 4] = this.topRight.x;
+                this._floatBuffer[indexOffset + 5] = this.topRight.y;
 
-                this._floatBuffer[indexOffset + 6] = this.bottomLeft.x;
-                this._floatBuffer[indexOffset + 7] = this.bottomLeft.y;
+                this._floatBuffer[indexOffset + 6] = right;
+                this._floatBuffer[indexOffset + 7] = top;
+
+                this._floatBuffer[indexOffset + 8] = this.bottomRight.x;
+                this._floatBuffer[indexOffset + 9] = this.bottomRight.y;
+
+                this._floatBuffer[indexOffset + 10] = right;
+                this._floatBuffer[indexOffset + 11] = bottom;
+
+                this._floatBuffer[indexOffset + 12] = this.bottomLeft.x;
+                this._floatBuffer[indexOffset + 13] = this.bottomLeft.y;
+
+                this._floatBuffer[indexOffset + 14] = left;
+                this._floatBuffer[indexOffset + 15] = bottom;
 
                 this._intBuffer[blaIndexOffset + 0] = intIndexOffset + 0;
                 this._intBuffer[blaIndexOffset + 1] = intIndexOffset + 1;
@@ -208,6 +234,20 @@
                 ++drawIndex;
             }
 
+            var glTexture = this.textureCache.getGlTexture(texture);
+
+
+            if (glTexture)
+            {
+                gl.activeTexture(gl.TEXTURE0);
+                gl.bindTexture(gl.TEXTURE_2D, glTexture);
+                gl.uniform1i(this._textureLocation, 0);
+            }
+            
+
+            gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+            gl.enable(gl.BLEND);
+
             gl.bindBuffer(gl.ARRAY_BUFFER, this._vertexBuffer);
             gl.bufferSubData(gl.ARRAY_BUFFER, 0, this._floatBuffer);
 
@@ -215,9 +255,12 @@
             gl.bufferSubData(gl.ELEMENT_ARRAY_BUFFER, 0, this._intBuffer);
 
             gl.enableVertexAttribArray(this._positionLocation);
-            gl.vertexAttribPointer(this._positionLocation, 2, gl.FLOAT, false, 0, 0);
+            gl.vertexAttribPointer(this._positionLocation, 2, gl.FLOAT, false, STRIDE, 0);
 
-            gl.drawElements(gl.TRIANGLES, 6 * session.length, gl.UNSIGNED_SHORT, 0);
+            gl.enableVertexAttribArray(this._texCoordLocation);
+            gl.vertexAttribPointer(this._texCoordLocation, 2, gl.FLOAT, false, STRIDE, TEX_COORD_OFFSET);
+
+            gl.drawElements(gl.TRIANGLES, 6 * session.sprites.length, gl.UNSIGNED_SHORT, 0);
         }
 
 

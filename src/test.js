@@ -3,7 +3,7 @@ var test = new ow.Texture('res/tiles.png');
 var test2 = new ow.Texture('res/tiles2.png');
 
 var renderer = new ow.WebGlRenderer();
-var sprite = new ow.Sprite(test, new ow.Rectangle(0, 0, 20, 20), new ow.Vector(0, 0));
+var sprite = new ow.Sprite(test, new ow.Rectangle(32.0, 32.0, 64.0, 64.0), new ow.Vector(0, 0));
 
 var matrix = new ow.Matrix();
 
@@ -11,8 +11,9 @@ var draw = function()
 {
     window.requestAnimationFrame(draw);
 
-    sprite.rotation += 5.0;
-    sprite.position.x += 0.8;
+    sprite.rotation += 1.0;
+    sprite.position.x = 100;
+    sprite.position.y = 100;
     //sprite.scale.x += 0.1;
 
     renderer.clear();
@@ -30,9 +31,9 @@ var draw = function()
 
     var prevTime = Date.now();
 
-    for (var i = 0; i < 205; i++)
+    for (var i = 0; i < 10; i++)
     {
-        sprite.position.y = 0;
+        //sprite.position.y = Math.random() * 200;
         renderer.draw(sprite);
     }
 

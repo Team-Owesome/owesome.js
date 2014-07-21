@@ -47,6 +47,23 @@
 		return this._internalImage;
 	}
 
+
+	Object.defineProperty(Texture.prototype, 'width',
+	{
+		get: function()
+		{
+			return this._internalImage.width;
+		}
+	});
+
+	Object.defineProperty(Texture.prototype, 'height',
+	{
+		get: function()
+		{
+			return this._internalImage.height;
+		}
+	})
+
 	Texture.CurrentId = 0;
 
 	ow.Texture = Texture;
