@@ -46,6 +46,9 @@
         this.domElement = document.createElement('canvas');
         this.context = this.domElement.getContext('webgl');
 
+        this.domElement.width = window.innerWidth;
+        this.domElement.height = window.innerHeight;
+
         this.renderSession = [];
         this.textureCache = new ow.TextureCache(this.context);
 
@@ -68,6 +71,8 @@
 
         gl.linkProgram(program);
         gl.useProgram(program);
+
+        gl.viewport(0, 0, this.domElement.width, this.domElement.height);
 
         this._positionLocation = gl.getAttribLocation(program, 'vertex');
         this._texCoordLocation = gl.getAttribLocation(program, 'texCoord');

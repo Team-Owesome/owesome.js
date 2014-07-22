@@ -11,7 +11,7 @@ var draw = function()
 {
     window.requestAnimationFrame(draw);
 
-    sprite.rotation += 1.0;
+    //sprite.rotation += 1.0;
     sprite.position.x = 100;
     sprite.position.y = 100;
     //sprite.scale.x += 0.1;
@@ -31,10 +31,14 @@ var draw = function()
 
     var prevTime = Date.now();
 
-    for (var i = 0; i < 10; i++)
+    for (var i = 0; i < 30; i++)
     {
-        //sprite.position.y = Math.random() * 200;
-        renderer.draw(sprite);
+        for (var j = 0; j < 30; j++)
+        {     
+            sprite.position.x = i * 64;
+            sprite.position.y = j * 64;
+            renderer.draw(sprite);
+        }
     }
 
     renderer.commit();

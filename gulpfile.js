@@ -31,6 +31,8 @@ gulp.task('shaders', ['clean'], function()
 {
 	return gulp.src([SRC_DIR + '/**/*.{frag,vert}'])
 		.pipe(replace(/^\/\/ (.+?)(\r\n|\n|\r)/g, '$1 = \''))
+		.pipe(replace(/\/\/(.+?)(\r\n|\n|\r)/g, '')) // Remove comments
+		.pipe(replace(/\/\*([\s\S]+?)\*\//g, '')) // Remove comments
 		.pipe(replace(/(\r\n|\n|\r)/g, ''))
 		.pipe(replace(/\s+/g, ' '))
 		.pipe(replace(/$/g, '\';'))
