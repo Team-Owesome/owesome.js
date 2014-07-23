@@ -29,20 +29,27 @@ var draw = function()
         renderer.drawTexture(test2, {x: Math.random() * 300, y: Math.random() * 300, width: 100, height: 100});
     }*/
 
-    var prevTime = Date.now();
-
-    for (var i = 0; i < 30; i++)
+    //var prevTime = Date.now();
+    /*
+    for (var i = 0; i < 10; i++)
     {
-        for (var j = 0; j < 30; j++)
+        for (var j = 0; j < 10; j++)
         {     
             sprite.position.x = i * 64;
             sprite.position.y = j * 64;
             renderer.draw(sprite);
         }
+    }*/
+
+    for (var j = 0; j < 3000; j++)
+    {     
+        sprite.position.x = Math.random() * window.innerWidth;
+        sprite.position.y = Math.random() * window.innerHeight;
+        renderer.draw(sprite);
     }
 
     renderer.commit();
-    var duration = Date.now() - prevTime;
+    //var duration = Date.now() - prevTime;
 };
 
 draw();

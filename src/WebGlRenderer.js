@@ -87,8 +87,8 @@
             -1, 1, 0, 1,
         ]);
 
-        this._intBuffer = new Uint16Array(5000 * 4);
-        this._floatBuffer = new Float32Array(5000 * 16);
+        this._intBuffer = new Uint16Array(3000 * 6);
+        this._floatBuffer = new Float32Array(3000 * 16);
 
         this._indexBuffer = gl.createBuffer();
         this._vertexBuffer = gl.createBuffer();
