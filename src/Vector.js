@@ -91,13 +91,11 @@
 
 	Vector.prototype.applyMatrix = function(matrix)
 	{
-		var array = matrix.array;
-
 		var x = this.x;
 		var y = this.y;
 
-		this.x = (array[0] * x) + (array[1] * y) + array[2];
-		this.y = (array[3] * x) + (array[4] * y) + array[5];
+		this.x = (matrix.a * x) + (matrix.b * y) + matrix.tx;
+		this.y = (matrix.c * x) + (matrix.d * y) + matrix.ty;
 	};
 
 	ow.Vector = Vector;

@@ -87,8 +87,8 @@
             -1, 1, 0, 1,
         ]);
 
-        this._intBuffer = new Uint16Array(3000 * 6);
-        this._floatBuffer = new Float32Array(3000 * 16);
+        this._intBuffer = new Uint16Array(6000 * 6);
+        this._floatBuffer = new Float32Array(6000 * 16);
 
         this._indexBuffer = gl.createBuffer();
         this._vertexBuffer = gl.createBuffer();
@@ -197,11 +197,11 @@
                 this.bottomLeft.applyMatrix(transformMatrix);
 
 
-                var top = textureRect.y / texture.width;
-                var left = textureRect.x / texture.height;
+                var top = textureRect.y / texture._width;
+                var left = textureRect.x / texture._height;
 
-                var right = (textureRect.x + textureRect.width) / texture.width;
-                var bottom = (textureRect.y + textureRect.height) / texture.height;
+                var right = (textureRect.x + textureRect.width) / texture._width;
+                var bottom = (textureRect.y + textureRect.height) / texture._height;
 
 
                 this._floatBuffer[indexOffset + 0] = this.topLeft.x;

@@ -4,6 +4,9 @@
 	{
 		this._id = Texture.CurrentId++;
 
+		this._width = 0;
+		this._heigth = 0;
+
 		if (typeof imageOrSrc === 'string')
 		{
 			this._internalImage = new Image();
@@ -32,8 +35,17 @@
 			this._internalImage.addEventListener('load', function()
 			{
 				console.debug('Texture #' + self._id + ' "' + self._internalImage.src + '" loaded...');
+
+				self._width = self._internalImage.width;
+				self._height = self._internalImage.height;
+
 				self.loaded = true;
 			});
+		}
+		else
+		{
+			this._width = this._internalImage.width;
+			this._height = this._internalImage.height;
 		}
 	};
 
@@ -48,11 +60,11 @@
 	}
 
 
-	Object.defineProperty(Texture.prototype, 'width',
+	/*Object.defineProperty(Texture.prototype, 'width',
 	{
 		get: function()
 		{
-			return this._internalImage.width;
+			return this._width;
 		}
 	});
 
@@ -60,9 +72,9 @@
 	{
 		get: function()
 		{
-			return this._internalImage.height;
+			return this._height;
 		}
-	})
+	})*/
 
 	Texture.CurrentId = 0;
 

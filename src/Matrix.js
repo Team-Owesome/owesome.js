@@ -1,19 +1,14 @@
 (function()
 {
-	var Matrix = function(array)
+	var Matrix = function(a, b, tx, c, d, ty)
 	{
-		this.array = [];
+		this.a = a || 1;
+		this.b = b || 0;
+		this.c = c || 0;
+		this.d = d || 1;
 
-		if (array)
-		{
-			this.array = array;
-		}
-		else
-		{
-			this.array = [1, 0, 0,
-					      0, 1, 0,
-					      0, 0, 1];
-		}
+		this.tx = tx || 0;
+		this.ty = ty || 0;
 	};
 
 	Matrix.prototype.toArray = function()
@@ -32,14 +27,14 @@
 
 	Matrix.prototype.copy = function()
 	{
-		return new Matrix(this.array);
+		return new Matrix(this.a, this.b, this.tx,
+						  this.c, this.d, this.ty);
 	};
 
 	Matrix.prototype.translate = function(x, y)
 	{
-		return this.multiplyByMatrixArray([1, 0, x,
-			  						       0, 1, y,
-			  						       0, 0, 1]);
+		return this.multiplyBy(1, 0, x,
+			                   0, 1, y);
 	};
 
 	Matrix.prototype.translation = function(x, y)
@@ -52,26 +47,42 @@
 		var c = Math.cos(angle);
 		var s = Math.sin(angle);
 
-		return this.multiplyByMatrixArray([c, -s,  0,
-						                   s,  c,  0,
-						                   0,  0,  1]);
+		return this.multiplyBy(c, -s,  0,
+						       s,  c,  0);
 	};
 
 	Matrix.prototype.scale = function(scaleX, scaleY)
 	{
-		return this.multiplyByMatrixArray([scaleX, 0,      0,
-						                   0,      scaleY, 0,
-						                   0,      0,      1]);
+		return this.multiplyBy(scaleX, 0,      0,
+						       0,      scaleY, 0);
 	};
 
 	Matrix.prototype.identity = function()
 	{
-		this.array = [1, 0, 0,
-					  0, 1, 0,
-					  0, 0, 1];
+		this.a = 1;
+		this.b = 0;
+		this.c = 0;
+		this.d = 1;
+
+		this.tx = 0;
+		this.ty = 0;
 
 		return this;
 	};
+
+	Matrix.prototype.multiplyBy = function(a, b, tx, c, d, ty)
+	{
+		var ta = this.a; var tb = this.b; var ttx = this.tx;
+		var tc = this.c; var td = this.d; var tty = this.ty;
+
+		this.a  = (ta * a) + (tb * c) /* + (ttx * 0) */;
+		this.b  = (ta * b) + (tb * d) /* + (ttx * 0) */;
+		this.tx = (ta * tx) + (tb * ty) + ttx;
+
+		this.c  = (tc * a) + (td * c) /* + (tty * 0) */;
+		this.d  = (tc * b) + (td * d) /* + (tty * 0) */;
+		this.ty = (tc * tx) + (td * ty) + tty;
+	}
 
 	Matrix.prototype.multiplyByMatrixArray = function(array)
 	{
