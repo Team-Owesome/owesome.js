@@ -44,7 +44,7 @@
     var WebGlRenderer = function()
     {
         this.domElement = document.createElement('canvas');
-        this.context = this.domElement.getContext('webgl');
+        this.context = this.domElement.getContext('webgl') || this.domElement.getContext('experimental-webgl');
 
         this.domElement.width = window.innerWidth;
         this.domElement.height = window.innerHeight;
@@ -179,23 +179,27 @@
                 var blaIndexOffset = drawIndex * 6;
                 var intIndexOffset = drawIndex * 4;
 
-                this.topLeft.x = 0;
-                this.topLeft.y = 0;
+                var topLeft = this.topLeft;
+                var topRight = this.topRight;
+                var bottomRight = this.bottomRight;
+                var bottomLeft = this.bottomLeft;
 
-                this.topRight.x = textureRect.width;
-                this.topRight.y = 0;
+                topLeft.x = 0;
+                topLeft.y = 0;
 
-                this.bottomRight.x = textureRect.width;
-                this.bottomRight.y = textureRect.height;
+                topRight.x = textureRect.width;
+                topRight.y = 0;
 
-                this.bottomLeft.x = 0;
-                this.bottomLeft.y = textureRect.height;
+                bottomRight.x = textureRect.width;
+                bottomRight.y = textureRect.height;
 
-                this.topLeft.applyMatrix(transformMatrix);
-                this.topRight.applyMatrix(transformMatrix);
-                this.bottomRight.applyMatrix(transformMatrix);
-                this.bottomLeft.applyMatrix(transformMatrix);
-
+                bottomLeft.x = 0;
+                bottomLeft.y = textureRect.height;
+                
+                topLeft.applyMatrix(transformMatrix);
+                topRight.applyMatrix(transformMatrix);
+                bottomRight.applyMatrix(transformMatrix);
+                bottomLeft.applyMatrix(transformMatrix);
 
                 var top = textureRect.y / texture._width;
                 var left = textureRect.x / texture._height;
@@ -204,26 +208,26 @@
                 var bottom = (textureRect.y + textureRect.height) / texture._height;
 
 
-                this._floatBuffer[indexOffset + 0] = this.topLeft.x;
-                this._floatBuffer[indexOffset + 1] = this.topLeft.y;
+                this._floatBuffer[indexOffset + 0] = topLeft.x;
+                this._floatBuffer[indexOffset + 1] = topLeft.y;
 
                 this._floatBuffer[indexOffset + 2] = left;
                 this._floatBuffer[indexOffset + 3] = top;
 
-                this._floatBuffer[indexOffset + 4] = this.topRight.x;
-                this._floatBuffer[indexOffset + 5] = this.topRight.y;
+                this._floatBuffer[indexOffset + 4] = topRight.x;
+                this._floatBuffer[indexOffset + 5] = topRight.y;
 
                 this._floatBuffer[indexOffset + 6] = right;
                 this._floatBuffer[indexOffset + 7] = top;
 
-                this._floatBuffer[indexOffset + 8] = this.bottomRight.x;
-                this._floatBuffer[indexOffset + 9] = this.bottomRight.y;
+                this._floatBuffer[indexOffset + 8] = bottomRight.x;
+                this._floatBuffer[indexOffset + 9] = bottomRight.y;
 
                 this._floatBuffer[indexOffset + 10] = right;
                 this._floatBuffer[indexOffset + 11] = bottom;
 
-                this._floatBuffer[indexOffset + 12] = this.bottomLeft.x;
-                this._floatBuffer[indexOffset + 13] = this.bottomLeft.y;
+                this._floatBuffer[indexOffset + 12] = bottomLeft.x;
+                this._floatBuffer[indexOffset + 13] = bottomLeft.y;
 
                 this._floatBuffer[indexOffset + 14] = left;
                 this._floatBuffer[indexOffset + 15] = bottom;

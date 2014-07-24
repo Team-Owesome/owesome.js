@@ -27,7 +27,9 @@
 
 	Sprite.prototype.draw = function(renderer)
 	{
-		renderer.drawTexture(this.texture, this.textureRect, this.getMatrix());
+		this.updateMatrix();
+
+		renderer.drawTexture(this.texture, this.textureRect, this._matrix);
 
 		var i = 0;
 
@@ -44,41 +46,50 @@
 		this.children.push(sprite);
 	};
 
-	Sprite.prototype.getMatrix = function()
+	Sprite.prototype.removeChild = function(sprite)
 	{
-		var matrix = this.parent ? this.parent.getMatrix() : this._matrix;
+		var index = this.children.indexOf(sprite);
 
-		if (!this.parent)
+		if (index != -1)
 		{
-			matrix.identity();
+			this.children.splice(index, 1);
 		}
+	};
 
+	Sprite.prototype.updateMatrix = function()
+	{
+		var parent = this.parent;
+		var matrix = this._matrix;
+
+		matrix.identity();
+
+		if (parent)
+		{
+			var parentTextureRect = parent.textureRect;
+			var parentAnchor = parent.anchor;
+
+			matrix.translate((parentTextureRect.width * parentAnchor.x),
+							 (parentTextureRect.height * parentAnchor.y));
+		}
+		
 		matrix.translate(this.position.x, this.position.y);
 		
-		if (this.rotation != 0) matrix.rotate(this.rotation * (Math.PI / 180));
 		if (this.scale.x != 1 || this.scale.y != 1) matrix.scale(this.scale.x, this.scale.y);
+		if (this.rotation != 0) matrix.rotate(this.rotation * (Math.PI / 180));
 
 		matrix.translate(-(this.textureRect.width * this.anchor.x),
 						 -(this.textureRect.height * this.anchor.y));
 
-		return matrix
+		if (parent)
+		{
+			var parentMatrix = this.parent.getCachedMatrix();
+			this._matrix = parentMatrix.multiplication(matrix);
+		}
 	};
 
-	Sprite.prototype.getMatrix2 = function()
+	Sprite.prototype.getCachedMatrix = function()
 	{
-		var matrix = this.parent ? this.parent.getMatrix() : this._matrix;
-
-		if (!this.parent)
-		{
-			matrix.identity();
-		}
-
-		matrix.translate(this.position.x, this.position.y);
-		
-		if (this.rotation != 0) matrix.rotate(this.rotation * (Math.PI / 180));
-		if (this.scale.x != 1 || this.scale.y != 1) matrix.scale(this.scale.x, this.scale.y);
-
-		return matrix
+		return this._matrix;
 	};
 
 	ow.Sprite = Sprite;

@@ -2,13 +2,13 @@
 {
 	var Matrix = function(a, b, tx, c, d, ty)
 	{
-		this.a = a || 1;
-		this.b = b || 0;
-		this.c = c || 0;
-		this.d = d || 1;
+		this.a = a != undefined ? Number(a) : 1;
+		this.b = b != undefined ? Number(b) : 0;
+		this.c = c != undefined ? Number(c) : 0;
+		this.d = d != undefined ? Number(d) : 1;
 
-		this.tx = tx || 0;
-		this.ty = ty || 0;
+		this.tx = tx != undefined ? Number(tx) : 0;
+		this.ty = ty != undefined ? Number(ty) : 0;
 	};
 
 	Matrix.prototype.toArray = function()
@@ -82,6 +82,8 @@
 		this.c  = (tc * a) + (td * c) /* + (tty * 0) */;
 		this.d  = (tc * b) + (td * d) /* + (tty * 0) */;
 		this.ty = (tc * tx) + (td * ty) + tty;
+
+		return this;
 	}
 
 	Matrix.prototype.multiplyByMatrixArray = function(array)
@@ -116,7 +118,12 @@
 
 	Matrix.prototype.multiply = function(matrix)
 	{
-		return this.multiplyByArray(matrix.array);
+		return this.multiplyBy(matrix.a, matrix.b, matrix.tx, matrix.c, matrix.d, matrix.ty);
+	};
+
+	Matrix.prototype.multiplication = function(matrix)
+	{
+		return this.copy().multiply(matrix);
 	};
 
 	Matrix.Identity = function()
@@ -126,9 +133,8 @@
 
 	Matrix.Translation = function(x, y)
 	{
-		return new Matrix([1, 0, x,
-						   0, 1, y,
-						   0, 0, 1]);
+		return new Matrix(1, 0, x,
+						  0, 1, y);
 	};
 
 	Matrix.Rotation = function(angle)
@@ -136,16 +142,14 @@
 		var c = Math.cos(angle);
 		var s = Math.sin(angle);
 
-		return new Matrix([c, -s,  0,
-						   s,  c,  0,
-						   0,  0,  1])
+		return new Matrix(c, -s,  0,
+						  s,  c,  0)
 	};
 
 	Matrix.Scale = function(scaleX, scaleY)
 	{
-		return new Matrix([scaleX, 0,      0,
-						   0,      scaleY, 0,
-						   0,      0,      1])
+		return new Matrix(scaleX, 0,      0,
+						  0,      scaleY, 0)
 	};
 
 	ow.Matrix = Matrix;

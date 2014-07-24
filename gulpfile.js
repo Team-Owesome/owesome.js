@@ -19,6 +19,12 @@ gulp.task('watch', function()
 	{
 		gulp.start('concat');
 	});
+
+	watch({ glob: ['examples/**/*.{js,html}'] }, function()
+	{
+		gulp.src('examples/**/*.{js,html}')
+		.pipe(connect.reload());
+	});
 });
 
 gulp.task('clean', function()
@@ -64,14 +70,9 @@ gulp.task('concat', ['copy'], function()
 			SRC_DIR + '/Sprite.js',
 			SRC_DIR + '/Matrix.js',
 			SRC_DIR + '/Vector.js',
-			SRC_DIR + '/Rectangle.js',
-			SRC_DIR + '/test.js'
+			SRC_DIR + '/Rectangle.js'
 		])
-		/*.pipe(concat('main.js', 
-		{
-			sourceRoot: '../'
-		}))*/
-		.pipe(uglify('main.min.js', { outSourceMap: true }))
+		.pipe(uglify('owesome.min.js', { outSourceMap: true }))
 		.pipe(gulp.dest(BUILD_DIR))
 		.pipe(connect.reload());
 });
@@ -80,7 +81,7 @@ gulp.task('connect', function()
 {
 	connect.server(
 	{
-		root: [path.resolve('./')],
+		root: [path.resolve('./examples'), path.resolve('./build')],
 		livereload: true
 	})
 });
