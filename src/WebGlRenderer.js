@@ -114,7 +114,7 @@
 
             texture = session.texture;
 
-            if (session.sprites.length > this._floatBuffer.length / 16)
+            if (session.sprites.length > this._floatBuffer.length / 32)
             {
                 this._floatBuffer = new Float32Array((session.sprites.length + START_BUFFER_SIZE) * 32)
                 this._intBuffer = new Uint16Array((session.sprites.length + START_BUFFER_SIZE) * 6)

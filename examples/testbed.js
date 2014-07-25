@@ -25,7 +25,7 @@ stats.setMode(0); // 0: fps, 1: ms
 
 // Align top-left
 stats.domElement.style.position = 'absolute';
-stats.domElement.style.left = '0px';
+stats.domElement.style.right = '0px';
 stats.domElement.style.top = '0px';
 
 document.body.appendChild( stats.domElement );
@@ -68,9 +68,9 @@ var draw = function()
     sprite2.color = {r: sin, g: cos, b: cos * sin, a: 1.0};
     sprite3.color = {r: sin, g: cos, b: cos * sin, a: 1.0};
 
-    for (var i = 0; i < 10; i++)
+    for (var i = 0; i < 20; i++)
     {
-        for (var j = 0; j < 10; j++)
+        for (var j = 0; j < 20; j++)
         {     
             sprite.position.x = i * 64;
             sprite.position.y = j * 64;
