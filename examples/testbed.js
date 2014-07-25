@@ -20,12 +20,25 @@ sprite3.anchor = new ow.Vector(0, 0.5);
 
 var time = 0;
 
+var stats = new Stats();
+stats.setMode(0); // 0: fps, 1: ms
+
+// Align top-left
+stats.domElement.style.position = 'absolute';
+stats.domElement.style.left = '0px';
+stats.domElement.style.top = '0px';
+
+document.body.appendChild( stats.domElement );
+
 
 var draw = function()
 {
+    stats.begin();
+
     window.requestAnimationFrame(draw);
 
     var sin = Math.sin(time);
+    var cos = Math.cos(time);
 
     renderer.clear();
     
@@ -50,6 +63,10 @@ var draw = function()
 
     sprite3.textureRect.x += 1;
     sprite3.textureRect.y += 1;
+
+    sprite.color = {r: sin, g: cos, b: cos * sin, a: 1.0};
+    sprite2.color = {r: sin, g: cos, b: cos * sin, a: 1.0};
+    sprite3.color = {r: sin, g: cos, b: cos * sin, a: 1.0};
 
     for (var i = 0; i < 10; i++)
     {
@@ -88,6 +105,7 @@ var draw = function()
    
 
     renderer.commit();
+    stats.end();
     //var duration = Date.now() - prevTime;
 };
 

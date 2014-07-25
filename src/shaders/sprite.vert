@@ -4,11 +4,15 @@ uniform mat4 projectionMatrix;
 
 attribute vec2 vertex;
 attribute vec2 texCoord;
+attribute vec4 color;
 
 varying highp vec2 vTextureCoord;
+varying highp vec4 vColor;
 
 void main() 
 {
     gl_Position = projectionMatrix * vec4(vertex.xy, 0, 1);
+
     vTextureCoord = texCoord;
+    vColor = color;
 }

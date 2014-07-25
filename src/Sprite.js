@@ -1,6 +1,6 @@
 (function()
 {
-	var Sprite = function(texture, textureRect, position, rotation, scale, anchor)
+	var Sprite = function(texture, textureRect, position, rotation, scale, anchor, color)
 	{
 		this.texture     = texture     || null;
 		this.position    = position    || new ow.Vector();
@@ -8,6 +8,7 @@
 		this.rotation    = rotation    || 0;
 		this.textureRect = textureRect || new ow.Rectangle();
 		this.anchor      = anchor      || new ow.Vector(0.5);
+		this.color       = color       || {r: 1.0, b: 1.0, g: 1.0, a: 1.0};
 		this.children    = [];
 
 		this._matrix = new ow.Matrix();
@@ -29,7 +30,7 @@
 	{
 		this.updateMatrix();
 
-		renderer.drawTexture(this.texture, this.textureRect, this._matrix);
+		renderer.drawTexture(this.texture, this.textureRect, this._matrix, this.color);
 
 		var i = 0;
 

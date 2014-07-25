@@ -94,16 +94,8 @@
 		var x = this.x;
 		var y = this.y;
 
-		var a = matrix.a;
-		var b = matrix.b;
-		var c = matrix.c;
-		var d = matrix.d;
-
-		var tx = matrix.tx;
-		var ty = matrix.ty;
-
-		this.x = (a * x) + (b * y) + tx;
-		this.y = (c * x) + (d * y) + ty;
+		this.x = (matrix.a * x) + (matrix.b * y) + matrix.tx;
+		this.y = (matrix.c * x) + (matrix.d * y) + matrix.ty;
 	};
 
 	ow.Vector = Vector;
