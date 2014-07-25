@@ -5,7 +5,7 @@ var test2 = new ow.Texture('res/tiles2.png');
 var renderer = new ow.WebGlRenderer();
 var sprite = new ow.Sprite(test, new ow.Rectangle(32.0, 32.0, 128.0, 64.0), new ow.Vector(100, 100));
 var sprite2 = new ow.Sprite(test, new ow.Rectangle(32.0, 32.0, 128.0, 64.0), new ow.Vector(128.0, 0));
-var sprite3 = new ow.Sprite(test, new ow.Rectangle(32.0, 32.0, 128.0, 64.0), new ow.Vector(128.0, 0));
+var sprite3 = new ow.Sprite(test2, new ow.Rectangle(32.0, 32.0, 128.0, 64.0), new ow.Vector(128.0, 0));
 
 
 sprite.addChild(sprite2);
@@ -106,7 +106,6 @@ var draw = function()
 
     renderer.commit();
     stats.end();
-    //var duration = Date.now() - prevTime;
 };
 
 draw();

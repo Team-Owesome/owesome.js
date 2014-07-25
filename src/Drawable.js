@@ -1,8 +1,8 @@
 (function()
 {
-	var Drawable = function() {};
+    var Drawable = function() {};
 
-	Drawable.prototype.draw = function(renderer) {};
+    Drawable.prototype.draw = function(renderer) {};
 
-	ow.Drawable = Drawable;
+    ow.Drawable = Drawable;
 })();
