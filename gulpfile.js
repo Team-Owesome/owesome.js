@@ -1,12 +1,10 @@
 var gulp = require('gulp');
 var clean = require('gulp-clean');
 var replace = require('gulp-replace');
-var concat = require('gulp-concat');
 var watch = require('gulp-watch');
 var connect = require('gulp-connect');
 var uglify = require('gulp-uglifyjs');
 var rename = require('gulp-rename');
-var mocha = require('gulp-mocha-phantomjs');
 var path = require('path');
 
 var SRC_DIR = 'src';
