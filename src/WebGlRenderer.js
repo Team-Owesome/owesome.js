@@ -5,13 +5,13 @@
     var COLOR_OFFSET = Float32Array.BYTES_PER_ELEMENT * 4;
     var START_BUFFER_SIZE = 1000;
 
-    var WebGlRenderer = function()
+    var WebGlRenderer = function( width, height )
     {
         this.domElement = document.createElement('canvas');
         this.context = this.domElement.getContext('webgl') || this.domElement.getContext('experimental-webgl');
 
-        this.domElement.width = window.innerWidth;
-        this.domElement.height = window.innerHeight;
+        this.domElement.width = width || window.innerWidth;
+        this.domElement.height = height || window.innerHeight;
 
         this.renderSession = [];
         this.textureCache = new ow.TextureCache(this.context);
@@ -59,8 +59,8 @@
         this._vertexBuffer = gl.createBuffer();
 
         gl.bindBuffer(gl.ARRAY_BUFFER, this._vertexBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, 
-                          this._floatBuffer, 
+        gl.bufferData(gl.ARRAY_BUFFER,
+                          this._floatBuffer,
                           gl.DYNAMIC_DRAW);
 
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this._indexBuffer);
@@ -234,7 +234,7 @@
                 gl.bindTexture(gl.TEXTURE_2D, glTexture);
                 gl.uniform1i(this._textureLocation, 0);
             }
-            
+
 
             gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
             gl.enable(gl.BLEND);
