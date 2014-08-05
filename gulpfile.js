@@ -5,17 +5,24 @@ var watch = require('gulp-watch');
 var connect = require('gulp-connect');
 var uglify = require('gulp-uglifyjs');
 var rename = require('gulp-rename');
+var preprocess = require('gulp-preprocess');
 var path = require('path');
+
+var argv = require('minimist')(process.argv.slice(2));
 
 var SRC_DIR = 'src';
 var INTERMEDIATE_DIR = 'intermediate';
 var BUILD_DIR = 'build';
 
+console.log(argv);
+
+var DEBUG = (argv.debug == true);
+
 gulp.task('watch', function()
 {
 	watch({ glob: [SRC_DIR + '/**/*.{js,frag,vert}'] }, function()
 	{
-		gulp.start('concat');
+		gulp.start('build');
 	});
 
 	watch({ glob: ['examples/**/*.{js,html}'] }, function()
@@ -53,7 +60,7 @@ gulp.task('copy', ['shaders'], function()
 		.pipe(gulp.dest(BUILD_DIR))
 });
 
-gulp.task('concat', ['copy'], function()
+gulp.task('build', ['copy'], function()
 {
 	return gulp.src(
 		[
@@ -70,6 +77,7 @@ gulp.task('concat', ['copy'], function()
 			SRC_DIR + '/Vector.js',
 			SRC_DIR + '/Rectangle.js'
 		])
+		.pipe(preprocess({ context: { DEBUG: DEBUG } }))
 		.pipe(uglify('owesome.min.js', { outSourceMap: true }))
 		.pipe(gulp.dest(BUILD_DIR))
 		.pipe(connect.reload());
