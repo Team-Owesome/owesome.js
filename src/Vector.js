@@ -99,4 +99,5 @@
     };
 
     ow.Vector = Vector;
+
 })();

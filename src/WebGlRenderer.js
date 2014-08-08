@@ -5,18 +5,23 @@
     var COLOR_OFFSET = Float32Array.BYTES_PER_ELEMENT * 4;
     var START_BUFFER_SIZE = 1000;
 
-    var WebGlRenderer = function( width, height )
+    var WebGlRenderer = function(width, height)
     {
         this.domElement = document.createElement('canvas');
-        this.context = this.domElement.getContext('webgl') || this.domElement.getContext('experimental-webgl');
 
-        this.domElement.width = width || window.innerWidth;
-        this.domElement.height = height || window.innerHeight;
+        var options = { preserveDrawingBuffer: true };
+
+        this.context = this.domElement.getContext('webgl', options) || this.domElement.getContext('experimental-webgl', options);
+        this.context.clearColor(0.0, 0.0, 0.0, 1.0);
+
+        this.domElement.width = width || 500;
+        this.domElement.height = height || 500;
 
         this.renderSession = [];
         this.textureCache = new ow.TextureCache(this.context);
 
         var gl = this.context;
+
 
         var vertexShader = gl.createShader(gl.VERTEX_SHADER);
         var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
@@ -57,6 +62,20 @@
 
         this._indexBuffer = gl.createBuffer();
         this._vertexBuffer = gl.createBuffer();
+
+        for (var i = 0; i < this._intBuffer.length; ++i)
+        {
+            var elementIndexOffset = i * 6;
+            var intIndexOffset = i * 4;
+
+            this._intBuffer[elementIndexOffset + 0] = intIndexOffset + 0;
+            this._intBuffer[elementIndexOffset + 1] = intIndexOffset + 1;
+            this._intBuffer[elementIndexOffset + 2] = intIndexOffset + 2;
+
+            this._intBuffer[elementIndexOffset + 3] = intIndexOffset + 2;
+            this._intBuffer[elementIndexOffset + 4] = intIndexOffset + 3;
+            this._intBuffer[elementIndexOffset + 5] = intIndexOffset + 0;
+        }
 
         gl.bindBuffer(gl.ARRAY_BUFFER, this._vertexBuffer);
         gl.bufferData(gl.ARRAY_BUFFER,
@@ -119,6 +138,20 @@
                 this._floatBuffer = new Float32Array((session.sprites.length + START_BUFFER_SIZE) * 32)
                 this._intBuffer = new Uint16Array((session.sprites.length + START_BUFFER_SIZE) * 6)
 
+                for (var i = 0; i < this._intBuffer.length; ++i)
+                {
+                    var elementIndexOffset = i * 6;
+                    var intIndexOffset = i * 4;
+
+                    this._intBuffer[elementIndexOffset + 0] = intIndexOffset + 0;
+                    this._intBuffer[elementIndexOffset + 1] = intIndexOffset + 1;
+                    this._intBuffer[elementIndexOffset + 2] = intIndexOffset + 2;
+
+                    this._intBuffer[elementIndexOffset + 3] = intIndexOffset + 2;
+                    this._intBuffer[elementIndexOffset + 4] = intIndexOffset + 3;
+                    this._intBuffer[elementIndexOffset + 5] = intIndexOffset + 0;
+                }
+
                 gl.bindBuffer(gl.ARRAY_BUFFER, this._vertexBuffer);
                 gl.bufferData(gl.ARRAY_BUFFER, this._floatBuffer, gl.DYNAMIC_DRAW);
 
@@ -158,17 +191,35 @@
                 bottomLeft.x = 0;
                 bottomLeft.y = textureRect.height;
 
-                topLeft.applyMatrix(transformMatrix);
-                topRight.applyMatrix(transformMatrix);
-                bottomRight.applyMatrix(transformMatrix);
-                bottomLeft.applyMatrix(transformMatrix);
+                var x = topLeft.x;
+                var y = topLeft.y;
 
-                var top = textureRect.y / texture._width;
-                var left = textureRect.x / texture._height;
+                topLeft.x = (transformMatrix.a * x) + (transformMatrix.b * y) + transformMatrix.tx;
+                topLeft.y = (transformMatrix.c * x) + (transformMatrix.d * y) + transformMatrix.ty;
+
+                x = topRight.x;
+                y = topRight.y;
+
+                topRight.x = (transformMatrix.a * x) + (transformMatrix.b * y) + transformMatrix.tx;
+                topRight.y = (transformMatrix.c * x) + (transformMatrix.d * y) + transformMatrix.ty;
+
+                x = bottomRight.x;
+                y = bottomRight.y;
+
+                bottomRight.x = (transformMatrix.a * x) + (transformMatrix.b * y) + transformMatrix.tx;
+                bottomRight.y = (transformMatrix.c * x) + (transformMatrix.d * y) + transformMatrix.ty;
+
+                x = bottomLeft.x;
+                y = bottomLeft.y;
+
+                bottomLeft.x = (transformMatrix.a * x) + (transformMatrix.b * y) + transformMatrix.tx;
+                bottomLeft.y = (transformMatrix.c * x) + (transformMatrix.d * y) + transformMatrix.ty;
+
+                var top = textureRect.y / texture._height;
+                var left = textureRect.x / texture._width;
 
                 var right = (textureRect.x + textureRect.width) / texture._width;
                 var bottom = (textureRect.y + textureRect.height) / texture._height;
-
 
                 floatBuffer[indexOffset + 0] = topLeft.x;
                 floatBuffer[indexOffset + 1] = topLeft.y;
@@ -214,14 +265,6 @@
                 floatBuffer[indexOffset + 30] = color.g;
                 floatBuffer[indexOffset + 31] = color.a;
 
-                intBuffer[elementIndexOffset + 0] = intIndexOffset + 0;
-                intBuffer[elementIndexOffset + 1] = intIndexOffset + 1;
-                intBuffer[elementIndexOffset + 2] = intIndexOffset + 2;
-
-                intBuffer[elementIndexOffset + 3] = intIndexOffset + 2;
-                intBuffer[elementIndexOffset + 4] = intIndexOffset + 3;
-                intBuffer[elementIndexOffset + 5] = intIndexOffset + 0;
-
                 ++drawIndex;
             }
 
@@ -263,7 +306,9 @@
 
     WebGlRenderer.prototype.clear = function()
     {
+        var gl = this.context;
 
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
     };
 
     ow.WebGlRenderer = WebGlRenderer;
