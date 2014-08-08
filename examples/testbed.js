@@ -8,6 +8,7 @@ var stageHeight = window.innerHeight;
 
 
 var time = 0;
+var bulletCount = 0;
 
 var stats = new Stats();
 stats.setMode(0); // 0: fps, 1: ms
@@ -17,7 +18,15 @@ stats.domElement.style.position = 'absolute';
 stats.domElement.style.right = '0px';
 stats.domElement.style.top = '0px';
 
-document.body.appendChild( stats.domElement );
+var countEl = document.createElement('div');
+
+countEl.style.position = 'absolute';
+countEl.style.left = '0';
+countEl.style.top = '0';
+countEl.style.color = '#FFF';
+
+document.body.appendChild(stats.domElement);
+document.body.appendChild(countEl);
 
 var Bullet = function()
 {
@@ -34,7 +43,7 @@ var Bullet = function()
     this.sprite2 = new ow.Sprite(test, new ow.Rectangle(16.0, 0.0, 16.0, 16.0), new ow.Vector(0, 0));
 
 
-    this.sprite.addChild(this.sprite2);
+    //this.sprite.addChild(this.sprite2);
 
     this.sprite.color = new ow.Color(Math.random(), Math.random(), Math.random(), 1.0);
     this.sprite2.color = new ow.Color(Math.random(), Math.random(), Math.random(), 1.0);
@@ -49,6 +58,8 @@ Bullet.prototype.update = function()
     this.sprite.position.y = this.y;
 
     //this.sprite2.rotation += 5;
+    //this.sprite.scale.x += 0.01;
+    //this.sprite.scale.y += 0.01;
     this.sprite2.scale = new ow.Vector(Math.sin(this.x / 10) + Math.sin(this.y / 10));
 };
 
@@ -69,9 +80,9 @@ var draw = function()
 
 
 
-    if (time % 5 < 0.1)
+    if (time % 1 < 0.1)
     {
-        for (var j = 0; j < 100; j++)
+        for (var j = 0; j < 200; j++)
         {
             var newBullet = new Bullet();
 
@@ -87,6 +98,8 @@ var draw = function()
             newBullet.prevBullet = lastBullet;
 
             lastBullet = newBullet;
+
+            ++bulletCount;
         }
     }
     
@@ -104,6 +117,8 @@ var draw = function()
         {
             currentBullet.prevBullet.nextBullet = currentBullet.nextBullet;
             currentBullet.nextBullet.prevBullet = currentBullet.prevBullet;
+
+            --bulletCount;
         }
 
         renderer.draw(currentBullet.sprite);
@@ -115,6 +130,8 @@ var draw = function()
 
     renderer.commit();
     stats.end();
+
+    countEl.innerHTML = bulletCount;
 };
 
 draw();

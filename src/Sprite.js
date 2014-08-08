@@ -8,7 +8,7 @@
         this.rotation    = rotation    || 0;
         this.textureRect = textureRect || new ow.Rectangle();
         this.anchor      = anchor      || new ow.Vector(0.5);
-        this.color       = color       || {r: 1.0, b: 1.0, g: 1.0, a: 1.0};
+        this.color       = color       || new ow.Color();
         this.children    = [];
 
         this._matrix = new ow.Matrix();
@@ -59,33 +59,55 @@
 
     Sprite.prototype.updateMatrix = function()
     {
+        // Inspired by Pixi.js
         var parent = this.parent;
         var matrix = this._matrix;
 
-        matrix.identity();
+        var parentMatrix = null;
 
         if (parent)
         {
-            var parentTextureRect = parent.textureRect;
-            var parentAnchor = parent.anchor;
-
-            matrix.translate((parentTextureRect.width * parentAnchor.x),
-                             (parentTextureRect.height * parentAnchor.y));
+            parentMatrix = parent.getCachedMatrix();
         }
-        
-        matrix.translate(this.position.x, this.position.y);
-        
-        if (this.scale.x != 1 || this.scale.y != 1) matrix.scale(this.scale.x, this.scale.y);
-        if (this.rotation != 0) matrix.rotate(this.rotation * (Math.PI / 180));
+        else
+        {
+            parentMatrix = { a: 1, b: 0, tx: 0,
+                             c: 0, d: 1, ty: 0 };
+        }
 
-        matrix.translate(-(this.textureRect.width * this.anchor.x),
-                         -(this.textureRect.height * this.anchor.y));
+        var ax = (this.textureRect.width * this.anchor.x);
+        var ay = (this.textureRect.height * this.anchor.y);
+
+        var pax = 0;
+        var pay = 0;
 
         if (parent)
         {
-            var parentMatrix = this.parent.getCachedMatrix();
-            this._matrix = parentMatrix.multiplication(matrix);
+            pax = -parent.textureRect.width * parent.anchor.x;
+            pay = -parent.textureRect.height * parent.anchor.y;
         }
+
+        var sr = Math.sin(this.rotation);
+        var cr = Math.cos(this.rotation);
+
+        var a00 = cr * this.scale.x,
+            a01 = -sr * this.scale.y,
+            a10 = sr * this.scale.x,
+            a11 = cr * this.scale.y,
+            a02 = this.position.x - a00 * ax - ay * a01 - pax,
+            a12 = this.position.y - a11 * ay - ax * a10 - pay,
+            b00 = parentMatrix.a,
+            b01 = parentMatrix.b,
+            b10 = parentMatrix.c,
+            b11 = parentMatrix.d;
+
+        matrix.a = b00 * a00 + b01 * a10;
+        matrix.b = b00 * a01 + b01 * a11;
+        matrix.tx = b00 * a02 + b01 * a12 + parentMatrix.tx;
+
+        matrix.c = b10 * a00 + b11 * a10;
+        matrix.d = b10 * a01 + b11 * a11;
+        matrix.ty = b10 * a02 + b11 * a12 + parentMatrix.ty;
     };
 
     Sprite.prototype.getCachedMatrix = function()
