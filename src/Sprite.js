@@ -90,10 +90,13 @@
         var sr = Math.sin(this.rotation);
         var cr = Math.cos(this.rotation);
 
-        var a00 = cr * this.scale.x,
-            a01 = -sr * this.scale.y,
-            a10 = sr * this.scale.x,
-            a11 = cr * this.scale.y,
+        var sx = this.scale.x;
+        var sy = this.scale.y;
+
+        var a00 = cr * sx,
+            a01 = -sr * sy,
+            a10 = sr * sx,
+            a11 = cr * sy,
             a02 = this.position.x - a00 * ax - ay * a01 - pax,
             a12 = this.position.y - a11 * ay - ax * a10 - pay,
             b00 = parentMatrix.a,
