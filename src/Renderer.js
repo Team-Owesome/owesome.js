@@ -8,10 +8,14 @@
     Renderer.prototype.drawTexture = function(texture, textureRect, transformMatrix) {};
     Renderer.prototype.draw = function(drawable)
     {
+        // @if DEBUG
+
         if (!(drawable instanceof ow.Drawable))
         {
             throw TypeError('drawable is not of type ow.Drawable.');
         }
+
+        // @endif
 
         drawable.draw(this);
     };

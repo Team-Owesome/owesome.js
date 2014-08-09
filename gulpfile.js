@@ -75,7 +75,6 @@ gulp.task('build', ['copy'], function()
 			SRC_DIR + '/Sprite.js',
 			SRC_DIR + '/Matrix.js',
 			SRC_DIR + '/Vector.js',
-			SRC_DIR + '/Color.js',
 			SRC_DIR + '/Rectangle.js'
 		])
 		.pipe(preprocess({ context: { DEBUG: DEBUG } }))

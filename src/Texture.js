@@ -60,7 +60,7 @@
     }
 
 
-    /*Object.defineProperty(Texture.prototype, 'width',
+    Object.defineProperty(Texture.prototype, 'width',
     {
         get: function()
         {
@@ -74,7 +74,7 @@
         {
             return this._height;
         }
-    })*/
+    });
 
     Texture.CurrentId = 0;
 

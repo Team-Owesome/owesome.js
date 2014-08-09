@@ -1,17 +1,26 @@
 (function()
 {
-    var Sprite = function(texture, textureRect, position, rotation, scale, anchor, color)
+    var Sprite = function(texture, textureRect, position, rotation, scale, anchor, alpha, color)
     {
         this.texture     = texture     || null;
+
         this.position    = position    || new ow.Vector();
         this.scale       = scale       || new ow.Vector(1);
         this.rotation    = rotation    || 0;
-        this.textureRect = textureRect || new ow.Rectangle();
         this.anchor      = anchor      || new ow.Vector(0.5);
-        this.color       = color       || new ow.Color();
+
+        this.textureRect = textureRect || new ow.Rectangle();
+        this.alpha       = alpha       || 1.0;
+        this.color       = color       || 0xFFFFFF;
+
         this.children    = [];
 
         this._matrix = new ow.Matrix();
+
+        this._sr = Math.sin(this.rotation);
+        this._cr = Math.cos(this.rotation);
+
+        this._cachedRotation = this.rotation;
     };
 
     Sprite.prototype = Object.create(ow.Drawable.prototype);
@@ -30,11 +39,13 @@
     {
         this.updateMatrix();
 
-        renderer.drawTexture(this.texture, this.textureRect, this._matrix, this.color);
+        renderer.drawTexture(this.texture,
+                             this.textureRect,
+                             this._matrix,
+                             this.alpha,
+                             this.color);
 
-        var i = 0;
-
-        for (i = 0; i < this.children.length; ++i)
+        for (var i = 0; i < this.children.length; ++i)
         {
             var child = this.children[i];
             child.draw(renderer);
@@ -65,9 +76,15 @@
 
         var parentMatrix = null;
 
+        var pax = 0;
+        var pay = 0;
+
         if (parent)
         {
             parentMatrix = parent.getCachedMatrix();
+
+            pax = -parent.textureRect.width * parent.anchor.x;
+            pay = -parent.textureRect.height * parent.anchor.y;
         }
         else
         {
@@ -78,17 +95,16 @@
         var ax = (this.textureRect.width * this.anchor.x);
         var ay = (this.textureRect.height * this.anchor.y);
 
-        var pax = 0;
-        var pay = 0;
-
-        if (parent)
+        if (this._cachedRotation != this.rotation)
         {
-            pax = -parent.textureRect.width * parent.anchor.x;
-            pay = -parent.textureRect.height * parent.anchor.y;
+            this._sr = Math.sin(this.rotation);
+            this._cr = Math.cos(this.rotation);
+
+            this._cachedRotation = this.rotation;
         }
 
-        var sr = Math.sin(this.rotation);
-        var cr = Math.cos(this.rotation);
+        var sr = this._sr;
+        var cr = this._cr;
 
         var sx = this.scale.x;
         var sy = this.scale.y;
@@ -96,10 +112,12 @@
         var a00 = cr * sx,
             a01 = -sr * sy,
             a10 = sr * sx,
-            a11 = cr * sy,
-            a02 = this.position.x - a00 * ax - ay * a01 - pax,
-            a12 = this.position.y - a11 * ay - ax * a10 - pay,
-            b00 = parentMatrix.a,
+            a11 = cr * sy;
+
+        var a02 = this.position.x - a00 * ax - ay * a01 - pax,
+            a12 = this.position.y - a11 * ay - ax * a10 - pay;
+
+        var b00 = parentMatrix.a,
             b01 = parentMatrix.b,
             b10 = parentMatrix.c,
             b11 = parentMatrix.d;
