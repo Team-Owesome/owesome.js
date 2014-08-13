@@ -52,13 +52,13 @@
         }
     };
 
-    Sprite.prototype.addChild = function(sprite)
+    Sprite.prototype.add = function(sprite)
     {
         sprite.parent = this;
         this.children.push(sprite);
     };
 
-    Sprite.prototype.removeChild = function(sprite)
+    Sprite.prototype.remove = function(sprite)
     {
         var index = this.children.indexOf(sprite);
 

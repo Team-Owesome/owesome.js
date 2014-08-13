@@ -17,6 +17,7 @@ var BUILD_DIR = 'build';
 console.log(argv);
 
 var DEBUG = (argv.debug == true);
+var BUILD_WEBGL = (argv.all == true || argv.webgl == true);
 
 gulp.task('watch', function()
 {
@@ -62,21 +63,26 @@ gulp.task('copy', ['shaders'], function()
 
 gulp.task('build', ['copy'], function()
 {
-	return gulp.src(
-		[
-			SRC_DIR + '/core.js',
-			INTERMEDIATE_DIR + '/**/*.{frag,vert}',
-			SRC_DIR + '/Texture.js',
-			SRC_DIR + '/TextureCache.js',
-			SRC_DIR + '/Drawable.js',
-			SRC_DIR + '/Renderer.js',
-			SRC_DIR + '/WebGlRenderer.js',
-			SRC_DIR + '/Stage.js',
-			SRC_DIR + '/Sprite.js',
-			SRC_DIR + '/Matrix.js',
-			SRC_DIR + '/Vector.js',
-			SRC_DIR + '/Rectangle.js'
-		])
+	var sources = [];
+
+	sources.push(SRC_DIR + '/core/core.js',
+			     SRC_DIR + '/core/Matrix.js',
+			     SRC_DIR + '/core/Vector.js',
+			     SRC_DIR + '/core/Rectangle.js',
+			     SRC_DIR + '/display/Texture.js',
+			     SRC_DIR + '/display/Drawable.js',
+				 SRC_DIR + '/display/Scene.js',
+				 SRC_DIR + '/display/Sprite.js',
+			     SRC_DIR + '/display/Renderer.js');
+
+	if (BUILD_WEBGL)
+	{
+		sources.push(INTERMEDIATE_DIR + '/**/*.{frag,vert}',
+			         SRC_DIR + '/display/webgl/TextureCache.js',
+			         SRC_DIR + '/display/webgl/WebGlRenderer.js');
+	}
+
+	return gulp.src(sources)
 		.pipe(preprocess({ context: { DEBUG: DEBUG } }))
 		.pipe(uglify('owesome.min.js', { outSourceMap: true }))
 		.pipe(gulp.dest(BUILD_DIR))
