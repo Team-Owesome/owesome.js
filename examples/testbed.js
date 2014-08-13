@@ -56,7 +56,7 @@ Bullet.prototype.update = function()
     this.sprite.position.x = this.x;
     this.sprite.position.y = this.y;
 
-    //this.sprite2.rotation += 5;
+    this.sprite2.rotation += 1;
     this.sprite2.scale = new ow.Vector(Math.sin(this.x / 10) + Math.sin(this.y / 10));
 };
 
@@ -77,7 +77,7 @@ var draw = function()
 
     if (time % 1 < 0.1)
     {
-        for (var j = 0; j < 100; j++)
+        for (var j = 0; j < 300; j++)
         {
             var newBullet = new Bullet();
 
@@ -86,8 +86,8 @@ var draw = function()
 
             var speed = (Math.random() * 1);
 
-            newBullet.vx = (Math.sin(j / 100 * Math.PI * 2));
-            newBullet.vy = (Math.cos(j / 100 * Math.PI * 2));
+            newBullet.vx = (Math.sin(j / 300 * Math.PI * 2));
+            newBullet.vy = (Math.cos(j / 300 * Math.PI * 2));
 
             lastBullet.nextBullet = newBullet;
             newBullet.prevBullet = lastBullet;
@@ -122,7 +122,7 @@ var draw = function()
 
     time += 0.1;
 
-    renderer.commit();
+    renderer.render();
 
     countEl.innerHTML = bulletCount;
     stats.end();

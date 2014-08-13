@@ -14,9 +14,9 @@
         this.color       = color       || 0xFFFFFF;
 
         this.children    = [];
-
+        
         this._matrix = new ow.Matrix();
-
+        
         this._sr = Math.sin(this.rotation);
         this._cr = Math.cos(this.rotation);
 

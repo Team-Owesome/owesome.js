@@ -2,11 +2,11 @@
 {
     var Rectangle = function(x, y, width, height)
     {
-        this.x = x;
-        this.y = y;
-
-        this.width = width;
-        this.height = height;
+        this.x      = (x !== undefined) ? Number(x) : 0;
+        this.y      = (y !== undefined) ? Number(y) : 0;
+        
+        this.width  = (width !== undefined) ? Number(width) : 0;
+        this.height = (height !== undefined) ? Number(height) : 0;
     };
 
     Rectangle.prototype.copy = function()

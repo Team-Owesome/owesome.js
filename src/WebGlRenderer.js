@@ -5,22 +5,32 @@
     var COLOR_OFFSET = Float32Array.BYTES_PER_ELEMENT * 4;
     var START_BUFFER_SIZE = 2000;
 
+    var DEFAULT_WIDTH = 500;
+    var DEFAULT_HEIGHT = 500;
+
     var WebGlRenderer = function(width, height)
     {
+        width = Number(width);
+        height = Number(height);
+
+        // Canvas element
         this.domElement = document.createElement('canvas');
+        
+        this.domElement.width = width || DEFAULT_WIDTH;
+        this.domElement.height = height || DEFAULT_HEIGHT;
 
         var options = { preserveDrawingBuffer: true };
 
-        this.context = this.domElement.getContext('webgl', options) || this.domElement.getContext('experimental-webgl', options);
-        this.context.clearColor(0.0, 0.0, 0.0, 1.0);
+        var gl = this.domElement.getContext('webgl', options) ||
+                 this.domElement.getContext('experimental-webgl', options);
 
-        this.domElement.width = width || 500;
-        this.domElement.height = height || 500;
+        gl.clearColor(0.0, 0.0, 0.0, 1.0);
+
+        this._drawBatchBuffer = [];
+        //this._drawDataBuffer = [];
 
         this.renderSession = [];
-        this.textureCache = new ow.TextureCache(this.context);
-
-        var gl = this.context;
+        this.textureCache = new ow.TextureCache(gl);
 
         var vertexShader = gl.createShader(gl.VERTEX_SHADER);
         var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
@@ -42,12 +52,12 @@
 
         gl.viewport(0, 0, this.domElement.width, this.domElement.height);
 
-        this._positionLocation = gl.getAttribLocation(program, 'vertex');
-        this._texCoordLocation = gl.getAttribLocation(program, 'texCoord');
+        this._positionLocation = gl.getAttribLocation(program, 'aPosition');
+        this._texCoordLocation = gl.getAttribLocation(program, 'aTexCoord');
         this._colorLocation = gl.getAttribLocation(program, 'aColor');
 
-        this._matrixLocation = gl.getUniformLocation(program, 'projectionMatrix');
-        this._textureLocation = gl.getUniformLocation(program, 'texture');
+        this._matrixLocation = gl.getUniformLocation(program, 'uProjectionMatrix');
+        this._textureLocation = gl.getUniformLocation(program, 'uTexture');
 
         gl.uniformMatrix4fv(this._matrixLocation, false,
         [
@@ -82,18 +92,58 @@
 
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this._indexBuffer);
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, this._intBuffer, gl.STATIC_DRAW);
+
+        this.context = gl;
     };
 
     WebGlRenderer.prototype = Object.create(ow.Renderer.prototype);
     WebGlRenderer.prototype.constructor = WebGlRenderer;
 
-    var DrawData = function(textureRect, transformMatrix, alpha, color)
+    /*var DrawData = function(textureRect, transformMatrix, alpha, color)
     {
+        var width = textureRect.width;
+        var height = textureRect.height;
+
         this.textureRect = textureRect;
-        this.transformMatrix = transformMatrix;
+        //this.transformMatrix = transformMatrix;
+
+        this.topLeft = new ow.Vector(transformMatrix.tx,
+                                     transformMatrix.ty);
+
+        this.topRight = new ow.Vector(transformMatrix.a * width + transformMatrix.tx,
+                                      transformMatrix.c * width + transformMatrix.ty);
+
+        this.bottomRight = new ow.Vector(transformMatrix.a * width + transformMatrix.b * height + transformMatrix.tx,
+                                   transformMatrix.c * width + transformMatrix.d * height + transformMatrix.ty);
+
+        this.bottomLeft = new ow.Vector(transformMatrix.b * height + transformMatrix.tx,
+                                    transformMatrix.d * height + transformMatrix.ty);
+
         this.alpha = alpha;
         this.color = color;
+    };*/
+
+    var DrawBatch = function()
+    {
+        this.texture = null;
+        this.drawDataArrayLength = 0;
+        this.drawDataArray = [];
     };
+
+    var DrawData = function()
+    {
+        //this.textureRect = new ow.Rectangle();
+        this.textureRect = null;
+        this.transformMatrix = null;
+
+        /*this.topLeft = new ow.Vector();
+        this.topRight = new ow.Vector();
+        this.bottomRight = new ow.Vector();
+        this.bottomLeft = new ow.Vector();*/
+
+        this.alpha = 1.0;
+        this.color = 0xFFFFFF;
+    }
 
     WebGlRenderer.prototype.drawTexture = function(texture, textureRect, transformMatrix, alpha, color)
     {
@@ -102,16 +152,58 @@
 
         if (!session)
         {
-            session = { texture: texture, sprites: [] };
+            session = this._drawBatchBuffer.pop();
+
+            if (!session)
+            {
+                session = new DrawBatch();
+            }
+
+            session.texture = texture;
+            session.drawDataArrayLength = 0;
+
             this.renderSession[textureId] = session;
         }
 
-        var obj = new DrawData(textureRect, transformMatrix, alpha, color);
+        var drawData = session.drawDataArray[session.drawDataArrayLength];
 
-        session.sprites.push(obj);
+        if (!drawData)
+        {
+            drawData = new DrawData();
+            session.drawDataArray.push(drawData);
+        }
+
+
+        drawData.textureRect = textureRect;
+        drawData.transformMatrix = transformMatrix;
+
+        /*var width = textureRect.width;
+        var height = textureRect.height;
+
+        drawData.textureRect.x = textureRect.x;
+        drawData.textureRect.y = textureRect.y;
+        drawData.textureRect.width = width;
+        drawData.textureRect.height = height;
+
+        drawData.topLeft.x = transformMatrix.tx;
+        drawData.topLeft.y = transformMatrix.ty;
+
+        drawData.topRight.x = transformMatrix.a * width + transformMatrix.tx;
+        drawData.topRight.y = transformMatrix.c * width + transformMatrix.ty;
+
+        drawData.bottomRight.x = transformMatrix.a * width + transformMatrix.b * height + transformMatrix.tx;
+        drawData.bottomRight.y = transformMatrix.c * width + transformMatrix.d * height + transformMatrix.ty;
+
+        drawData.bottomLeft.x = transformMatrix.b * height + transformMatrix.tx;
+        drawData.bottomLeft.y = transformMatrix.d * height + transformMatrix.ty;
+        */
+        drawData.alpha = alpha;
+        drawData.color = color;
+
+        session.drawDataArrayLength++;
     };
 
-    WebGlRenderer.prototype.commit = function()
+    WebGlRenderer.prototype.render = function()
     {
         var id;
         var gl = this.context;
@@ -125,13 +217,17 @@
         for (id in this.renderSession)
         {
             session = this.renderSession[id];
-            this.drawSession(session);
+
+            this._drawBatch(session);
+            this._drawBatchBuffer.push(session);
         }    
 
+
+            console.log(this._drawBatchBuffer.length);
         this.renderSession = [];
     };
 
-    WebGlRenderer.prototype.drawSession = function(session)
+    WebGlRenderer.prototype._drawBatch = function(session)
     {
         var texture = session.texture;
         var gl = this.context;
@@ -142,17 +238,22 @@
         var floatBuffer = this._floatBuffer;
         var intBuffer = this._intBuffer;
 
+        var drawDataArray = session.drawDataArray;
+        var drawDataArrayLength = session.drawDataArrayLength;
+
         var iteration;
-        var numIterations = Math.ceil(session.sprites.length / START_BUFFER_SIZE);
+        var numIterations = Math.ceil(drawDataArrayLength / START_BUFFER_SIZE);
 
         for (iteration = 0; iteration < numIterations; ++iteration)
         {
             var offset = iteration * START_BUFFER_SIZE;
             drawIndex = 0;
 
-            for (i = offset; i < Math.min(offset + START_BUFFER_SIZE, session.sprites.length); ++i)
+            var maxI = Math.min(offset + START_BUFFER_SIZE, drawDataArrayLength);
+
+            for (i = offset; i < maxI; ++i)
             {
-                var obj = session.sprites[i];
+                var obj = drawDataArray[i];
 
                 var textureRect = obj.textureRect;
                 var transformMatrix = obj.transformMatrix;
@@ -163,14 +264,17 @@
                 var elementIndexOffset = drawIndex * 6;
                 var intIndexOffset = drawIndex * 4;
 
+                var x = textureRect.x;
+                var y = textureRect.y;
+
                 var width = textureRect.width;
                 var height = textureRect.height;
 
-                var top = textureRect.y / texture._height;
-                var left = textureRect.x / texture._width;
+                var top = y / texture._height;
+                var left = x / texture._width;
 
-                var right = (textureRect.x + textureRect.width) / texture._width;
-                var bottom = (textureRect.y + textureRect.height) / texture._height;
+                var right = (x + width) / texture._width;
+                var bottom = (y + height) / texture._height;
 
                 floatBuffer[indexOffset + 0] = /*(transformMatrix.a * 0) + (transformMatrix.b * 0) + */transformMatrix.tx;
                 floatBuffer[indexOffset + 1] = /*(transformMatrix.c * 0) + (transformMatrix.d * 0) + */transformMatrix.ty;

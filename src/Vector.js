@@ -2,8 +2,8 @@
 {
     var Vector = function(x, y)
     {
-        this.x = Number(x || 0);
-        this.y = Number(y != undefined ? y : (x || 0));
+        this.x = (x !== undefined) ? Number(x) : 0;
+        this.y = (y !== undefined) ? Number(y) : this.x;
     };
 
     Vector.prototype.toArray = function()
@@ -13,12 +13,7 @@
 
     Vector.prototype.toNativeArray = function()
     {
-        var array = new Float32Array(2);
-
-        array[0] = this.x;
-        array[1] = this.y;
-
-        return array;
+        return new Float32Array(this.toArray());
     };
 
     Vector.prototype.copy = function()

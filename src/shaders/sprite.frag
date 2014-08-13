@@ -1,11 +1,11 @@
 // ow.SPRITE_FRAG_SHADER_SRC
 
-uniform sampler2D texture;
+uniform sampler2D uTexture;
 
-varying highp vec2 vTextureCoord;
-varying highp vec4 vColor;
+varying mediump vec2 vTexCoord;
+varying lowp vec4 vColor;
 
 void main()
 {
-    gl_FragColor = texture2D(texture, vTextureCoord) * vColor;
+    gl_FragColor = texture2D(uTexture, vTexCoord) * vColor;
 }

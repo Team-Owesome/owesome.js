@@ -20,7 +20,7 @@
         drawable.draw(this);
     };
 
-    Renderer.prototype.commit = function() {};
+    Renderer.prototype.render = function() {};
     Renderer.prototype.clear = function() {};
 
     ow.Renderer = Renderer;
