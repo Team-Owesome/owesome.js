@@ -1,6 +1,6 @@
 
 var test = new ow.Texture('res/bullet.png');
-var randomTexture = new ow.Texture('res/basic_ground_tiles.png');
+var randomTexture = new ow.Texture('res/npot.png');
 
 
 var renderer = new ow.WebGlRenderer(window.innerWidth, window.innerHeight);
@@ -87,6 +87,7 @@ scene.add(containerSprite);
 
 var draw = function()
 {
+    window.requestAnimationFrame(draw);
     stats.begin();
 
     containerSprite.position.x = Math.sin(time) * 100.0 + window.innerWidth / 2;
@@ -102,36 +103,31 @@ var draw = function()
     otherSprite1.textureRect.x = Math.sin(time) * 50.0;
     otherSprite1.textureRect.y = Math.cos(time) * 50.0;
 
-    //scene.add(containerSprite.copy());
-
-    window.requestAnimationFrame(draw);
-
     renderer.clear();
 
-    if (time % 1 < 0.1)
+    
+    for (var j = 0; j < 2; j++)
     {
-        for (var j = 0; j < 20; j++)
-        {
-            var newBullet = new Bullet();
+        var newBullet = new Bullet();
 
-            scene.add(newBullet.sprite);
+        scene.add(newBullet.sprite);
 
-            newBullet.x = window.innerWidth / 2;
-            newBullet.y = window.innerHeight / 2;
+        newBullet.x = window.innerWidth / 2;
+        newBullet.y = window.innerHeight / 2;
 
-            var speed = (Math.random() * 1);
+        newBullet.vx = (Math.sin(j / 2 * Math.PI * 2 + time));
+        newBullet.vy = (Math.cos(j / 2 * Math.PI * 2 + time));
 
-            newBullet.vx = (Math.sin(j / 20 * Math.PI * 2));
-            newBullet.vy = (Math.cos(j / 20 * Math.PI * 2));
+        lastBullet.nextBullet = newBullet;
+        newBullet.prevBullet = lastBullet;
 
-            lastBullet.nextBullet = newBullet;
-            newBullet.prevBullet = lastBullet;
+        lastBullet = newBullet;
 
-            lastBullet = newBullet;
-
-            ++bulletCount;
-        }
+        ++bulletCount;
     }
+            
+    firstBullet.x = window.innerWidth / 2;
+    firstBullet.y = window.innerHeight / 2;
     
     var currentBullet = firstBullet;
 
@@ -164,11 +160,14 @@ var draw = function()
     scene.scale.set(2.0 + Math.sin(time / 10));
 
     renderer.render(scene);
-
-    countEl.textContent = bulletCount * 2 ;
     stats.end();
 };
 
 draw();
+
+window.addEventListener('resize', function(e)
+{
+    renderer.setSize(window.innerWidth, window.innerHeight);
+});
 
 document.body.appendChild(renderer.domElement);

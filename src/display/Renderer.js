@@ -1,9 +1,6 @@
 (function()
 {
-    var Renderer = function()
-    {
-        this.domElement = null;
-    };
+    var Renderer = function() {};
 
     Renderer.prototype.render = function(scene)
     {
@@ -18,9 +15,7 @@
     };
 
     Renderer.prototype.clear = function() {};
-
     Renderer.prototype.drawTexture = function(texture, textureRect, transformMatrix) {};
-    Renderer.prototype.flush = function() {};
 
     ow.Renderer = Renderer;
 })();
