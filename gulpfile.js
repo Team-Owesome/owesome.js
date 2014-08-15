@@ -71,6 +71,7 @@ gulp.task('build', ['copy'], function()
 			     SRC_DIR + '/core/Rectangle.js',
 			     SRC_DIR + '/display/Texture.js',
 			     SRC_DIR + '/display/Drawable.js',
+			     SRC_DIR + '/display/DrawableContainer.js',
 				 SRC_DIR + '/display/Scene.js',
 				 SRC_DIR + '/display/Sprite.js',
 			     SRC_DIR + '/display/Renderer.js');

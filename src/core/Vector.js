@@ -21,6 +21,12 @@
         return new Vector(this.x, this.y);
     };
 
+    Vector.prototype.set = function(x, y)
+    {
+        this.x = x;
+        this.y = y !== undefined ? y : x;
+    };
+
     Vector.prototype.add = function(vectorOrNumber, optionalY)
     {
         if (vectorOrNumber instanceof Vector)

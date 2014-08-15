@@ -2,6 +2,8 @@
 {
     var Sprite = function(texture, textureRect, position, rotation, scale, anchor, alpha, color)
     {
+        ow.DrawableContainer.call(this);
+
         this.texture     = texture     || null;
 
         this.position    = position    || new ow.Vector();
@@ -13,38 +15,50 @@
         this.alpha       = alpha       || 1.0;
         this.color       = color       || 0xFFFFFF;
 
-        this.children    = [];
-        
-        this._matrix = new ow.Matrix();
-        
         this._sr = Math.sin(this.rotation);
         this._cr = Math.cos(this.rotation);
 
         this._cachedRotation = this.rotation;
     };
 
-    Sprite.prototype = Object.create(ow.Drawable.prototype);
+    Sprite.prototype = Object.create(ow.DrawableContainer.prototype);
     Sprite.prototype.constructor = Sprite;
 
     Sprite.prototype.copy = function()
     {
-        return new ow.Sprite(this.texture,
-                             this.position,
-                             this.scale,
-                             this.rotation,
-                             this.textureRect);
+        var copy = new ow.Sprite(this.texture,
+                                 this.textureRect.copy(),
+                                 this.position.copy(),
+                                 this.rotation,
+                                 this.scale.copy(),
+                                 this.anchor.copy(),
+                                 this.alpha,
+                                 this.color);
+
+        for (var i = 0; i < this.children.length; ++i)
+        {
+            var child = this.children[i];
+            var childCopy = child.copy();
+
+            copy.add(childCopy);
+        }
+
+        return copy;
     };
 
     Sprite.prototype.draw = function(renderer)
     {
         this.updateMatrix();
 
-        renderer.drawTexture(this.texture,
-                             this.textureRect,
-                             this._matrix,
-                             this.alpha,
-                             this.color);
-
+        if (this.texture)
+        {
+            renderer.drawTexture(this.texture,
+                                 this.textureRect,
+                                 this.matrix,
+                                 this.alpha,
+                                 this.color);
+        }
+        
         for (var i = 0; i < this.children.length; ++i)
         {
             var child = this.children[i];
@@ -52,27 +66,11 @@
         }
     };
 
-    Sprite.prototype.add = function(sprite)
-    {
-        sprite.parent = this;
-        this.children.push(sprite);
-    };
-
-    Sprite.prototype.remove = function(sprite)
-    {
-        var index = this.children.indexOf(sprite);
-
-        if (index != -1)
-        {
-            this.children.splice(index, 1);
-        }
-    };
-
     Sprite.prototype.updateMatrix = function()
     {
         // Inspired by Pixi.js
         var parent = this.parent;
-        var matrix = this._matrix;
+        var matrix = this.matrix;
 
         var parentMatrix = null;
 
@@ -81,10 +79,13 @@
 
         if (parent)
         {
-            parentMatrix = parent.getCachedMatrix();
+            parentMatrix = parent.matrix;
 
-            pax = -parent.textureRect.width * parent.anchor.x;
-            pay = -parent.textureRect.height * parent.anchor.y;
+            if (parent instanceof ow.Sprite)
+            {
+                pax = -parent.textureRect.width * parent.anchor.x;
+                pay = -parent.textureRect.height * parent.anchor.y;
+            }
         }
         else
         {
@@ -129,11 +130,6 @@
         matrix.c = b10 * a00 + b11 * a10;
         matrix.d = b10 * a01 + b11 * a11;
         matrix.ty = b10 * a02 + b11 * a12 + parentMatrix.ty;
-    };
-
-    Sprite.prototype.getCachedMatrix = function()
-    {
-        return this._matrix;
     };
 
     ow.Sprite = Sprite;

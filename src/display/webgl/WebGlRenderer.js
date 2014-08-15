@@ -13,6 +13,9 @@
         width = Number(width);
         height = Number(height);
 
+        this.width = width;
+        this.height = height;
+
         // Canvas element
         this.domElement = document.createElement('canvas');
         
@@ -170,11 +173,11 @@
         var width = textureRect.width;
         var height = textureRect.height;
 
-        var top = y / texture._height;
-        var left = x / texture._width;
+        var top = y / texture.height;
+        var left = x / texture.width;
 
-        var right = (x + width) / texture._width;
-        var bottom = (y + height) / texture._height;
+        var right = (x + width) / texture.width;
+        var bottom = (y + height) / texture.height;
 
         vertexBuffer[indexOffset + 0] = /*(transformMatrix.a * 0) + (transformMatrix.b * 0) + */transformMatrix.tx;
         vertexBuffer[indexOffset + 1] = /*(transformMatrix.c * 0) + (transformMatrix.d * 0) + */transformMatrix.ty;
@@ -266,8 +269,10 @@
         */
     };
 
-    WebGlRenderer.prototype.render = function()
+    WebGlRenderer.prototype.render = function(drawable)
     {
+        drawable.draw(this);
+
         var id;
         var gl = this.context;
 
