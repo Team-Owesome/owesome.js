@@ -1,9 +1,31 @@
+// The MIT License (MIT)
+// 
+// Copyright (c) 2014 Team Owesome (http://owesome.ch)
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
 (function()
 {
     var STRIDE = Float32Array.BYTES_PER_ELEMENT * 6;
     var TEX_COORD_OFFSET = Float32Array.BYTES_PER_ELEMENT * 2;
     var COLOR_OFFSET = Float32Array.BYTES_PER_ELEMENT * 4;
-    var START_BUFFER_SIZE = 2000;
+    var MAX_BATCH_SIZE = 2000;
 
     var DEFAULT_WIDTH = 500;
     var DEFAULT_HEIGHT = 500;
@@ -12,21 +34,21 @@
 
     var DrawBatch = function()
     {
-        this.texture = null;
         this.size = 0;
+        this.texture = null;
 
-        this.vertexBuffer = new Float32Array(START_BUFFER_SIZE * 24);
+        this.vertexBufferArray = new Float32Array(MAX_BATCH_SIZE * 24);
     };
 
     DrawBatch.prototype.dispose = function()
     {
-        this.texture = null;
         this.size = 0;
+        this.texture = null;
 
         drawBatchPool.push(this);
-    }
+    };
 
-    DrawBatch.create = function()
+    DrawBatch.create = function(renderer)
     {
         var drawBatch = drawBatchPool.pop();
 
@@ -36,14 +58,13 @@
         }
 
         return drawBatch;
-    }
+    };
 
     var WebGlRenderer = function(width, height)
     {
         width = width || DEFAULT_WIDTH;
         height = height || DEFAULT_HEIGHT;
 
-        // Canvas element
         this.domElement = document.createElement('canvas');
 
         var options = { preserveDrawingBuffer: true };
@@ -52,9 +73,6 @@
                  this.domElement.getContext('experimental-webgl', options);
 
         gl.clearColor(0.0, 0.0, 0.0, 1.0);
-
-        this._drawBatchPool = [];
-        //this._drawDataBuffer = [];
 
         this.drawBatches = [];
 
@@ -70,7 +88,6 @@
         gl.shaderSource(fragmentShader, ow.SPRITE_FRAG_SHADER_SRC);
         gl.compileShader(fragmentShader);
 
-        // setup a GLSL program
         var program = gl.createProgram();
 
         gl.attachShader(program, vertexShader);
@@ -79,38 +96,40 @@
         gl.linkProgram(program);
         gl.useProgram(program);
 
+        gl.deleteShader(vertexShader);
+        gl.deleteShader(fragmentShader);
+
         this._positionLocation = gl.getAttribLocation(program, 'aPosition');
         this._texCoordLocation = gl.getAttribLocation(program, 'aTexCoord');
-        this._colorLocation = gl.getAttribLocation(program, 'aColor');
+        this._colorLocation =    gl.getAttribLocation(program, 'aColor');
 
-        this._matrixLocation = gl.getUniformLocation(program, 'uProjectionMatrix');
-        this._textureLocation = gl.getUniformLocation(program, 'uTexture');
-
-        this._intBuffer = new Uint16Array(START_BUFFER_SIZE * 6);
-        this._floatBuffer = new Float32Array(START_BUFFER_SIZE * 24);
+        this._matrixLocation =   gl.getUniformLocation(program, 'uProjectionMatrix');
+        this._textureLocation =  gl.getUniformLocation(program, 'uTexture');
 
         this._indexBuffer = gl.createBuffer();
         this._vertexBuffer = gl.createBuffer();
 
-        for (var i = 0; i < this._intBuffer.length; ++i)
+        var indexBufferArray = new Uint16Array(MAX_BATCH_SIZE * 6);
+
+        for (var i = 0; i < indexBufferArray.length; ++i)
         {
-            var elementIndexOffset = i * 6;
-            var intIndexOffset = i * 4;
+            var arrayIndexOffset = i * 6;
+            var indexOffset = i * 4;
 
-            this._intBuffer[elementIndexOffset + 0] = intIndexOffset + 0;
-            this._intBuffer[elementIndexOffset + 1] = intIndexOffset + 1;
-            this._intBuffer[elementIndexOffset + 2] = intIndexOffset + 2;
+            indexBufferArray[arrayIndexOffset + 0] = indexOffset + 0;
+            indexBufferArray[arrayIndexOffset + 1] = indexOffset + 1;
+            indexBufferArray[arrayIndexOffset + 2] = indexOffset + 2;
 
-            this._intBuffer[elementIndexOffset + 3] = intIndexOffset + 2;
-            this._intBuffer[elementIndexOffset + 4] = intIndexOffset + 3;
-            this._intBuffer[elementIndexOffset + 5] = intIndexOffset + 0;
+            indexBufferArray[arrayIndexOffset + 3] = indexOffset + 2;
+            indexBufferArray[arrayIndexOffset + 4] = indexOffset + 3;
+            indexBufferArray[arrayIndexOffset + 5] = indexOffset + 0;
         }
 
         gl.bindBuffer(gl.ARRAY_BUFFER, this._vertexBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, this._floatBuffer, gl.DYNAMIC_DRAW);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(MAX_BATCH_SIZE * 24), gl.DYNAMIC_DRAW);
 
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this._indexBuffer);
-        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, this._intBuffer, gl.STATIC_DRAW);
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indexBufferArray, gl.STATIC_DRAW);
 
         gl.enableVertexAttribArray(this._positionLocation);
         gl.vertexAttribPointer(this._positionLocation, 2, gl.FLOAT, false, STRIDE, 0);
@@ -124,7 +143,7 @@
         gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
         gl.enable(gl.BLEND);
 
-        this.context = gl;
+        this.gl = gl;
         this.setSize(width, height);
     };
 
@@ -147,7 +166,7 @@
             drawBatches[textureId] = drawBatch;
         }
 
-        var vertexBuffer = drawBatch.vertexBuffer;
+        var vertexBufferArray = drawBatch.vertexBufferArray;
 
         var size = drawBatch.size;
 
@@ -165,47 +184,47 @@
         var right = (x + width) / texture.width;
         var bottom = (y + height) / texture.height;
 
-        vertexBuffer[indexOffset + 0] = /*(transformMatrix.a * 0) + (transformMatrix.b * 0) + */transformMatrix.tx;
-        vertexBuffer[indexOffset + 1] = /*(transformMatrix.c * 0) + (transformMatrix.d * 0) + */transformMatrix.ty;
+        vertexBufferArray[indexOffset + 0] = /*(transformMatrix.a * 0) + (transformMatrix.b * 0) + */transformMatrix.tx;
+        vertexBufferArray[indexOffset + 1] = /*(transformMatrix.c * 0) + (transformMatrix.d * 0) + */transformMatrix.ty;
 
-        vertexBuffer[indexOffset + 2] = left;
-        vertexBuffer[indexOffset + 3] = top;
+        vertexBufferArray[indexOffset + 2] = left;
+        vertexBufferArray[indexOffset + 3] = top;
 
-        vertexBuffer[indexOffset + 4] = alpha;
-        vertexBuffer[indexOffset + 5] = color;
+        vertexBufferArray[indexOffset + 4] = alpha;
+        vertexBufferArray[indexOffset + 5] = color;
 
-        vertexBuffer[indexOffset + 6] = transformMatrix.a * width/* + (transformMatrix.b * 0)*/ + transformMatrix.tx;
-        vertexBuffer[indexOffset + 7] = transformMatrix.c * width/* + (transformMatrix.d * 0)*/ + transformMatrix.ty;
+        vertexBufferArray[indexOffset + 6] = transformMatrix.a * width/* + (transformMatrix.b * 0)*/ + transformMatrix.tx;
+        vertexBufferArray[indexOffset + 7] = transformMatrix.c * width/* + (transformMatrix.d * 0)*/ + transformMatrix.ty;
 
-        vertexBuffer[indexOffset + 8] = right;
-        vertexBuffer[indexOffset + 9] = top;
+        vertexBufferArray[indexOffset + 8] = right;
+        vertexBufferArray[indexOffset + 9] = top;
 
-        vertexBuffer[indexOffset + 10] = alpha;
-        vertexBuffer[indexOffset + 11] = color;
+        vertexBufferArray[indexOffset + 10] = alpha;
+        vertexBufferArray[indexOffset + 11] = color;
 
-        vertexBuffer[indexOffset + 12] = transformMatrix.a * width + transformMatrix.b * height + transformMatrix.tx;
-        vertexBuffer[indexOffset + 13] = transformMatrix.c * width + transformMatrix.d * height + transformMatrix.ty;
+        vertexBufferArray[indexOffset + 12] = transformMatrix.a * width + transformMatrix.b * height + transformMatrix.tx;
+        vertexBufferArray[indexOffset + 13] = transformMatrix.c * width + transformMatrix.d * height + transformMatrix.ty;
 
-        vertexBuffer[indexOffset + 14] = right;
-        vertexBuffer[indexOffset + 15] = bottom;
+        vertexBufferArray[indexOffset + 14] = right;
+        vertexBufferArray[indexOffset + 15] = bottom;
 
-        vertexBuffer[indexOffset + 16] = alpha;
-        vertexBuffer[indexOffset + 17] = color;
+        vertexBufferArray[indexOffset + 16] = alpha;
+        vertexBufferArray[indexOffset + 17] = color;
 
-        vertexBuffer[indexOffset + 18] = /*(transformMatrix.a * 0) + */transformMatrix.b * height + transformMatrix.tx;
-        vertexBuffer[indexOffset + 19] = /*(transformMatrix.c * 0) + */transformMatrix.d * height + transformMatrix.ty;
+        vertexBufferArray[indexOffset + 18] = /*(transformMatrix.a * 0) + */transformMatrix.b * height + transformMatrix.tx;
+        vertexBufferArray[indexOffset + 19] = /*(transformMatrix.c * 0) + */transformMatrix.d * height + transformMatrix.ty;
 
-        vertexBuffer[indexOffset + 20] = left;
-        vertexBuffer[indexOffset + 21] = bottom;
+        vertexBufferArray[indexOffset + 20] = left;
+        vertexBufferArray[indexOffset + 21] = bottom;
 
-        vertexBuffer[indexOffset + 22] = alpha;
-        vertexBuffer[indexOffset + 23] = color;
+        vertexBufferArray[indexOffset + 22] = alpha;
+        vertexBufferArray[indexOffset + 23] = color;
 
         ++drawBatch.size;
 
-        if (drawBatch.size >= START_BUFFER_SIZE)
+        if (drawBatch.size >= MAX_BATCH_SIZE)
         {
-            this._drawBatch(drawBatch);
+            this._flushBatch(drawBatch);
             drawBatch.size = 0;
         }
     };
@@ -215,7 +234,7 @@
         drawable.draw(this);
 
         var id;
-        var gl = this.context;
+        var gl = this.gl;
 
         var drawIndex = 0;
         var session = null;
@@ -232,7 +251,7 @@
         {
             drawBatch = drawBatches[id];
 
-            this._drawBatch(drawBatch);
+            this._flushBatch(drawBatch);
 
             drawBatch.dispose();
         }    
@@ -241,17 +260,13 @@
         drawBatches.length = 0;
     };
 
-    WebGlRenderer.prototype._drawBatch = function(drawBatch)
+    WebGlRenderer.prototype._flushBatch = function(drawBatch)
     {
+        var gl = this.gl;
+
+        var vertexBufferArray = drawBatch.vertexBufferArray;
+
         var texture = drawBatch.texture;
-        var gl = this.context;
-
-        var drawIndex = 0;
-        var i = 0;
-
-        var floatBuffer = drawBatch.vertexBuffer;
-        var intBuffer = this._intBuffer;
-
         var glTexture = this.textureCache.getGlTexture(texture);
 
         if (glTexture)
@@ -261,21 +276,21 @@
             gl.uniform1i(this._textureLocation, 0);
         }
 
-        gl.bindBuffer(gl.ARRAY_BUFFER, this._vertexBuffer);
-        gl.bufferSubData(gl.ARRAY_BUFFER, 0, floatBuffer.subarray(0, drawBatch.size * 24));
-
+        gl.bufferSubData(gl.ARRAY_BUFFER, 0, vertexBufferArray.subarray(0, drawBatch.size * 24));
         gl.drawElements(gl.TRIANGLES, 6 * drawBatch.size, gl.UNSIGNED_SHORT, 0);
     }
 
     WebGlRenderer.prototype.setSize = function(width, height)
     {
+        var gl = this.gl;
+
         this.width = Number(width);
         this.height = Number(height);
 
         this.domElement.width = this.width;
         this.domElement.height = this.height;
 
-        this.context.uniformMatrix4fv(this._matrixLocation, false,
+        gl.uniformMatrix4fv(this._matrixLocation, false,
         [
             2 / this.width, 0,                0, 0,
             0,              -2 / this.height, 0, 0,
@@ -283,12 +298,12 @@
             -1,             1,                0, 1,
         ]);
 
-        this.context.viewport(0, 0, this.width, this.height);
+        gl.viewport(0, 0, this.width, this.height);
     };
 
     WebGlRenderer.prototype.clear = function()
     {
-        var gl = this.context;
+        var gl = this.gl;
 
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
     };
