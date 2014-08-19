@@ -17,7 +17,14 @@ var BUILD_DIR = 'build';
 console.log(argv);
 
 var DEBUG = (argv.debug == true);
-var BUILD_WEBGL = (argv.all == true || argv.webgl == true);
+var WEBGL = argv['webgl'] !== undefined ? argv['webgl'] : true;
+var MATRIX_MATH = argv['matrix-math'] !== undefined ? argv['matrix-math'] : true;
+var VECTOR_MATH = argv['vector-math'] !== undefined ? argv['vector-math'] : true;
+
+console.info('DEBUG = ' + DEBUG);
+console.info('WEBGL = ' + WEBGL);
+console.info('MATRIX_MATH = ' + MATRIX_MATH);
+console.info('VECTOR_MATH = ' + VECTOR_MATH);
 
 gulp.task('watch', function()
 {
@@ -76,7 +83,7 @@ gulp.task('build', ['copy'], function()
 				 SRC_DIR + '/display/Sprite.js',
 			     SRC_DIR + '/display/Renderer.js');
 
-	if (BUILD_WEBGL)
+	if (WEBGL)
 	{
 		sources.push(INTERMEDIATE_DIR + '/**/*.{frag,vert}',
 			         SRC_DIR + '/display/webgl/TextureCache.js',
@@ -84,8 +91,8 @@ gulp.task('build', ['copy'], function()
 	}
 
 	return gulp.src(sources)
-		.pipe(preprocess({ context: { DEBUG: DEBUG } }))
-		.pipe(uglify('owesome.min.js', { outSourceMap: true }))
+		.pipe(preprocess({ context: { DEBUG: DEBUG, VECTOR_MATH: VECTOR_MATH, MATRIX_MATH: MATRIX_MATH } }))
+		.pipe(uglify('owesome.min.js', { outSourceMap: DEBUG }))
 		.pipe(gulp.dest(BUILD_DIR))
 		.pipe(connect.reload());
 });
