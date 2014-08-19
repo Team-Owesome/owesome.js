@@ -4,8 +4,28 @@
 		"selected_items":
 		[
 			[
+				"drawDa",
+				"drawDataArray"
+			],
+			[
+				"drawDat",
+				"drawDataArrayLength"
+			],
+			[
+				"_draw",
+				"_drawDataBuffer"
+			],
+			[
+				"top",
+				"topRight"
+			],
+			[
 				"draw",
-				"drawSession"
+				"drawData"
+			],
+			[
+				"_bu",
+				"_drawDataBuffer"
 			],
 			[
 				"un",
@@ -54,10 +74,6 @@
 			[
 				"rota",
 				"rotation"
-			],
-			[
-				"top",
-				"topLeft"
 			],
 			[
 				"te",
@@ -216,90 +232,10 @@
 	"buffers":
 	[
 		{
-			"file": "src/Stage.js",
-			"settings":
-			{
-				"buffer_size": 186,
-				"line_ending": "Windows"
-			}
-		},
-		{
 			"file": "examples/testbed.js",
 			"settings":
 			{
-				"buffer_size": 3055,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "src/Matrix.js",
-			"settings":
-			{
-				"buffer_size": 3330,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "src/Renderer.js",
-			"settings":
-			{
-				"buffer_size": 577,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "src/WebGlRenderer.js",
-			"settings":
-			{
-				"buffer_size": 9224,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "src/Texture.js",
-			"settings":
-			{
-				"buffer_size": 1839,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "src/Vector.js",
-			"settings":
-			{
-				"buffer_size": 2397,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "gulpfile.js",
-			"settings":
-			{
-				"buffer_size": 2284,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "src/shaders/sprite.vert",
-			"settings":
-			{
-				"buffer_size": 448,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "src/shaders/sprite.frag",
-			"settings":
-			{
-				"buffer_size": 198,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "src/Sprite.js",
-			"settings":
-			{
-				"buffer_size": 3782,
+				"buffer_size": 4346,
 				"line_ending": "Windows"
 			}
 		}
@@ -348,7 +284,23 @@
 	},
 	"file_history":
 	[
+		"/C/Users/Till/Desktop/development/owesome.js/node_modules/grunt-replace/node_modules/applause/node_modules/cson/node_modules/js2coffee/node_modules/docpad/node_modules/superagent/node_modules/form-data/node_modules/combined-stream/lib/combined_stream.js",
+		"/C/Users/Till/Desktop/development/owesome.js/build/owesome.min.js",
 		"/C/Users/Till/Desktop/development/owesome.js/src/core.js",
+		"/C/Users/Till/Desktop/development/owesome.js/src/shaders/sprite.frag",
+		"/C/Users/Till/Desktop/development/owesome.js/src/shaders/sprite.vert",
+		"/C/Users/Till/Desktop/development/owesome.js/src/Vector.js",
+		"/C/Users/Till/Desktop/development/owesome.js/src/Sprite.js",
+		"/C/Users/Till/Desktop/development/owesome.js/src/WebGlRenderer.js",
+		"/C/Users/Till/Desktop/development/owesome.js/src/Renderer.js",
+		"/C/Users/Till/Desktop/development/owesome.js/src/Rectangle.js",
+		"/C/Users/Till/Desktop/development/owesome.js/src/Drawable.js",
+		"/C/Users/Till/Desktop/development/owesome.js/src/Stage.js",
+		"/C/Users/Till/Desktop/development/owesome.js/examples/testbed.js",
+		"/C/Users/Till/Desktop/development/owesome.js/src/Matrix.js",
+		"/C/Users/Till/Desktop/development/luckyfilm-face_your_fears/gulpfile.js",
+		"/C/Users/Till/Desktop/development/owesome.js/src/Texture.js",
+		"/C/Users/Till/Desktop/development/owesome.js/gulpfile.js",
 		"/C/Users/Till/Desktop/development/owesome.js/index.html",
 		"/C/Users/Till/Desktop/development/owesome.js/src/test.js",
 		"/Users/till/Desktop/development/projects/smallfastcanvas/src/TextureCache.js",
@@ -424,7 +376,7 @@
 	],
 	"find":
 	{
-		"height": 34.0
+		"height": 68.0
 	},
 	"find_in_files":
 	{
@@ -438,6 +390,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"this.conte",
 			"_colorLocation",
 			"16",
 			"this._color",
@@ -480,52 +433,24 @@
 	"groups":
 	[
 		{
-			"selected": 4,
+			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "src/Stage.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 186,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
 					"file": "examples/testbed.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3055,
+						"buffer_size": 4346,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1041,
-								1041
+								0,
+								0
 							]
 						],
 						"settings":
@@ -535,274 +460,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 882.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "src/Matrix.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3330,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2783,
-								2783
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1215.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "src/Renderer.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 577,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								411,
-								411
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "src/WebGlRenderer.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 9224,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								9000,
-								9000
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 3195.0,
+						"translation.y": 900.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "src/Texture.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1839,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1777,
-								1777
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 135.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "src/Vector.js",
-					"semi_transient": true,
-					"settings":
-					{
-						"buffer_size": 2397,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"file": "gulpfile.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2284,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1890,
-								1890
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": -0.0,
-						"translation.y": 540.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 10,
-					"type": "text"
-				},
-				{
-					"buffer": 8,
-					"file": "src/shaders/sprite.vert",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 448,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								100,
-								100
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"file": "src/shaders/sprite.frag",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 198,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 9,
-					"type": "text"
-				},
-				{
-					"buffer": 10,
-					"file": "src/Sprite.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3782,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2130,
-								2130
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 1350.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
 					"type": "text"
 				}
 			]

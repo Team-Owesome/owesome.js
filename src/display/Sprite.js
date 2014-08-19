@@ -86,6 +86,11 @@
                 pax = -parent.textureRect.width * parent.anchor.x;
                 pay = -parent.textureRect.height * parent.anchor.y;
             }
+            else if (parent instanceof ow.Scene)
+            {
+                pax = -parent.width * parent.anchor.x;
+                pay = -parent.height * parent.anchor.y;
+            }
         }
         else
         {

@@ -9,6 +9,9 @@
         this.rotation    = rotation    || 0;
         this.anchor      = anchor      || new ow.Vector(0.5);
 
+        this.width = 0;
+        this.height = 0;
+
         this._sr = Math.sin(this.rotation);
         this._cr = Math.cos(this.rotation);
 
