@@ -89,8 +89,8 @@ var bullets = [];
 var firstBullet = new Bullet();
 var lastBullet = firstBullet;
 
-firstBullet.x = window.innerWidth / 2;
-firstBullet.y = window.innerHeight / 2;
+//firstBullet.x = window.innerWidth / 2;
+//firstBullet.y = window.innerHeight / 2;
 
 scene.add(firstBullet.sprite);
 
@@ -111,8 +111,8 @@ var draw = function()
     window.requestAnimationFrame(draw);
     stats.begin();
 
-    containerSprite.position.x = Math.sin(time) * 100.0 + window.innerWidth / 2;
-    containerSprite.position.y = Math.cos(time) * 100.0 + window.innerHeight / 2;
+    containerSprite.position.x = Math.sin(time) * 100.0;
+    containerSprite.position.y = Math.cos(time) * 100.0;
 
     //containerSprite.rotation += 1;
     //containerSprite.scale.x = Math.sin(this.time) * 2 + 1;
@@ -133,8 +133,8 @@ var draw = function()
 
         scene.add(newBullet.sprite);
 
-        newBullet.x = window.innerWidth / 2;
-        newBullet.y = window.innerHeight / 2;
+        //newBullet.x = window.innerWidth / 2;
+        //newBullet.y = window.innerHeight / 2;
 
         newBullet.vx = (Math.sin(j / 2 * Math.PI * 2 + time));
         newBullet.vy = (Math.cos(j / 2 * Math.PI * 2 + time));
@@ -147,8 +147,8 @@ var draw = function()
         ++bulletCount;
     }
             
-    firstBullet.x = window.innerWidth / 2;
-    firstBullet.y = window.innerHeight / 2;
+    //firstBullet.x = window.innerWidth / 2;
+    //firstBullet.y = window.innerHeight / 2;
     
     var currentBullet = firstBullet;
 
@@ -156,10 +156,10 @@ var draw = function()
     {
         currentBullet.update();
 
-        if (currentBullet.x < 0 ||
-            currentBullet.y < 0 ||
-            currentBullet.x > window.innerWidth ||
-            currentBullet.y > window.innerHeight)
+        if (currentBullet.x < -window.innerWidth / 2 ||
+            currentBullet.y < -window.innerHeight / 2 ||
+            currentBullet.x > window.innerWidth / 2 ||
+            currentBullet.y > window.innerHeight / 2)
         {
             currentBullet.prevBullet.nextBullet = currentBullet.nextBullet;
             currentBullet.nextBullet.prevBullet = currentBullet.prevBullet;
@@ -177,7 +177,7 @@ var draw = function()
     time += 0.1;
 
     scene.rotation = Math.sin(time / 10);
-    scene.position.set(Math.sin(time / 10) * 200.0, Math.cos(time / 10) * 200.0);
+    //scene.position.set(Math.sin(time / 10) * 200.0, Math.cos(time / 10) * 200.0);
     scene.scale.set(2.0 + Math.sin(time / 10));
 
     renderer.render(scene);
