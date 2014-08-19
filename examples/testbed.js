@@ -176,7 +176,7 @@ var draw = function()
 
     time += 0.1;
 
-    scene.rotation = Math.sin(time / 10);
+    scene.rotation = Math.sin(time / 5) * 40;
     //scene.position.set(Math.sin(time / 10) * 200.0, Math.cos(time / 10) * 200.0);
     scene.scale.set(2.0 + Math.sin(time / 10));
 

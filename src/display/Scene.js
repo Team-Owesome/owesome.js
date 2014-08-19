@@ -34,8 +34,10 @@
         this.width = 0;
         this.height = 0;
 
-        this._sr = Math.sin(this.rotation);
-        this._cr = Math.cos(this.rotation);
+        var radRotation = this.rotation * (Math.PI / 180.0);
+
+        this._sr = Math.sin(radRotation);
+        this._cr = Math.cos(radRotation);
 
         this._cachedRotation = this.rotation;
     };
@@ -75,8 +77,10 @@
 
         if (this._cachedRotation != this.rotation)
         {
-            this._sr = Math.sin(this.rotation);
-            this._cr = Math.cos(this.rotation);
+            var radRotation = this.rotation * (Math.PI / 180.0);
+
+            this._sr = Math.sin(radRotation);
+            this._cr = Math.cos(radRotation);
 
             this._cachedRotation = this.rotation;
         }
