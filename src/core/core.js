@@ -1,7 +1,12 @@
 'use strict';
 
 var ow = {};
+
+// @if !CONCAT
+
 global.ow = ow;
+
+// @endif
 
 // @if DEBUG
 
