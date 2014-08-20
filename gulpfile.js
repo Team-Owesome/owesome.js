@@ -7,7 +7,6 @@ var uglify = require('gulp-uglifyjs');
 var rename = require('gulp-rename');
 var preprocess = require('gulp-preprocess');
 var path = require('path');
-var closureCompiler = require('gulp-closure-compiler');
 
 var argv = require('minimist')(process.argv.slice(2));
 
@@ -17,7 +16,8 @@ var BUILD_DIR = 'build';
 
 console.log(argv);
 
-var DEBUG = (argv.debug == true);
+var DEBUG = argv['debug'] !== undefined ? argv['debug'] : false;
+var BEAUTIFY = argv['beautify'] !== undefined ? argv['beautify'] : false;
 var WEBGL = argv['webgl'] !== undefined ? argv['webgl'] : true;
 var MATRIX_MATH = argv['matrix-math'] !== undefined ? argv['matrix-math'] : true;
 var VECTOR_MATH = argv['vector-math'] !== undefined ? argv['vector-math'] : true;
@@ -93,19 +93,36 @@ gulp.task('build', ['copy'], function()
 
 	return gulp.src(sources)
 		.pipe(preprocess({ context: { DEBUG: DEBUG, VECTOR_MATH: VECTOR_MATH, MATRIX_MATH: MATRIX_MATH } }))
-		.pipe(uglify('owesome.min.js', { outSourceMap: DEBUG, compress: { unsafe: true }, enclose: { this: 'window' } }))
-		/*.pipe(closureCompiler(
+		.pipe(uglify('owesome.min.js',
 		{
-			compilerPath: './compiler.jar',
-			fileName: 'owesome.min.js', 
-			compilerFlags:
+			outSourceMap: DEBUG,
+			compress:
 			{
-				compilation_level: 'ADVANCED_OPTIMIZATIONS',
-				source_map_format: 'V3',
-				create_source_map: BUILD_DIR + '/owesome.min.js.map',
-				language_in: 'ECMASCRIPT5_STRICT'
+				sequences     : !BEAUTIFY,  // join consecutive statemets with the “comma operator”
+				properties    : !BEAUTIFY,  // optimize property access: a["foo"] → a.foo
+				dead_code     : !BEAUTIFY,  // discard unreachable code
+				drop_debugger : !BEAUTIFY,  // discard “debugger” statements
+				unsafe        : !BEAUTIFY, // some unsafe optimizations (see below)
+				conditionals  : !BEAUTIFY,  // optimize if-s and conditional expressions
+				comparisons   : !BEAUTIFY,  // optimize comparisons
+				evaluate      : !BEAUTIFY,  // evaluate constant expressions
+				booleans      : !BEAUTIFY,  // optimize boolean expressions
+				loops         : !BEAUTIFY,  // optimize loops
+				unused        : !BEAUTIFY,  // drop unused variables/functions
+				hoist_funs    : !BEAUTIFY,  // hoist function declarations
+				if_return     : !BEAUTIFY,  // optimize if-s followed by return/continue
+				join_vars     : !BEAUTIFY,  // join var declarations
+				cascade       : !BEAUTIFY,  // try to cascade `right` into `left` in sequences
+				side_effects  : !BEAUTIFY,  // drop side-effect-free statements
+			},
+			enclose: { this: 'global' },
+			mangle: !BEAUTIFY,
+			output:
+			{
+				beautify      : BEAUTIFY,
+				comments      : BEAUTIFY
 			}
-		}))*/
+		}))
 		.pipe(gulp.dest(BUILD_DIR))
 		.pipe(connect.reload());
 });

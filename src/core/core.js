@@ -1,7 +1,7 @@
 'use strict';
 
 var ow = {};
-arguments[0].ow = ow;
+global.ow = ow;
 
 // @if DEBUG
 
