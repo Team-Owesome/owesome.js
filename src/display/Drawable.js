@@ -27,8 +27,10 @@
         this.parent = null;
     };
 
-    Drawable.prototype.draw = function(renderer) {};
-    Drawable.prototype.copy = function()
+    var proto = Drawable.prototype;
+
+    proto.draw = function(renderer) {};
+    proto.copy = function()
     { 
         // @if DEBUG
         

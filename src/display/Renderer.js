@@ -24,7 +24,9 @@
 {
     var Renderer = function() {};
 
-    Renderer.prototype.render = function(scene)
+    var proto = Renderer.prototype;
+
+    proto.render = function(scene)
     {
         // @if DEBUG
 
@@ -36,8 +38,8 @@
         // @endif
     };
 
-    Renderer.prototype.clear = function() {};
-    Renderer.prototype.drawTexture = function(texture, textureRect, transformMatrix) {};
+    proto.clear = function() {};
+    proto.drawTexture = function(texture, textureRect, transformMatrix) {};
 
     ow.Renderer = Renderer;
 })();

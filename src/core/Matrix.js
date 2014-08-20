@@ -33,8 +33,9 @@
         this.ty = ty != undefined ? Number(ty) : 0;
     };
 
+    var proto = Matrix.prototype;
 
-    Matrix.prototype.toArray = function()
+    proto.toArray = function()
     {
         var ar = this.array;
 
@@ -43,12 +44,12 @@
                 0,      0,      1];
     };
 
-    Matrix.prototype.toNativeArray = function()
+    proto.toNativeArray = function()
     {
         return new Float32Array(this.toArray());
     };
 
-    Matrix.prototype.copy = function()
+    proto.copy = function()
     {
         return new Matrix(this.a, this.b, this.tx,
                           this.c, this.d, this.ty);
@@ -56,18 +57,18 @@
 
     // @if MATRIX_MATH
 
-    Matrix.prototype.translate = function(x, y)
+    proto.translate = function(x, y)
     {
         return this.multiplyBy(1, 0, x,
                                0, 1, y);
     };
 
-    Matrix.prototype.translation = function(x, y)
+    proto.translation = function(x, y)
     {
         return this.copy().translate(x, y);
     };
 
-    Matrix.prototype.rotate = function(angle)
+    proto.rotate = function(angle)
     {
         var c = Math.cos(angle);
         var s = Math.sin(angle);
@@ -76,13 +77,13 @@
                                s,  c,  0);
     };
 
-    Matrix.prototype.scale = function(scaleX, scaleY)
+    proto.scale = function(scaleX, scaleY)
     {
         return this.multiplyBy(scaleX, 0,      0,
                                0,      scaleY, 0);
     };
 
-    Matrix.prototype.identity = function()
+    proto.identity = function()
     {
         this.a = 1;
         this.b = 0;
@@ -95,7 +96,7 @@
         return this;
     };
 
-    Matrix.prototype.multiplyBy = function(a, b, tx, c, d, ty)
+    proto.multiplyBy = function(a, b, tx, c, d, ty)
     {
         var ta = this.a; var tb = this.b; var ttx = this.tx;
         var tc = this.c; var td = this.d; var tty = this.ty;
@@ -111,12 +112,12 @@
         return this;
     }
 
-    Matrix.prototype.multiply = function(matrix)
+    proto.multiply = function(matrix)
     {
         return this.multiplyBy(matrix.a, matrix.b, matrix.tx, matrix.c, matrix.d, matrix.ty);
     };
 
-    Matrix.prototype.multiplication = function(matrix)
+    proto.multiplication = function(matrix)
     {
         return this.copy().multiply(matrix);
     };

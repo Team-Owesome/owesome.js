@@ -45,10 +45,10 @@
         this._cachedRotation = this.rotation;
     };
 
-    Sprite.prototype = Object.create(ow.DrawableContainer.prototype);
-    Sprite.prototype.constructor = Sprite;
+    var proto = Sprite.prototype = Object.create(ow.DrawableContainer.prototype);
+    proto.constructor = Sprite;
 
-    Sprite.prototype.copy = function()
+    proto.copy = function()
     {
         var copy = new ow.Sprite(this.texture,
                                  this.textureRect.copy(),
@@ -70,7 +70,7 @@
         return copy;
     };
 
-    Sprite.prototype.draw = function(renderer)
+    proto.draw = function(renderer)
     {
         this.updateMatrix();
 
@@ -90,7 +90,7 @@
         }
     };
 
-    Sprite.prototype.updateMatrix = function()
+    proto.updateMatrix = function()
     {
         // Inspired by Pixi.js
         var parent = this.parent;

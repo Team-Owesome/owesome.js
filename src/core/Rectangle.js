@@ -31,7 +31,9 @@
         this.height = (height !== undefined) ? Number(height) : 0;
     };
 
-    Rectangle.prototype.copy = function()
+    var proto = Rectangle.prototype;
+
+    proto.copy = function()
     {
         return new Rectangle(this.x, this.y, this.width, this.height);
     };

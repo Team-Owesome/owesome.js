@@ -92,7 +92,7 @@ gulp.task('build', ['copy'], function()
 
 	return gulp.src(sources)
 		.pipe(preprocess({ context: { DEBUG: DEBUG, VECTOR_MATH: VECTOR_MATH, MATRIX_MATH: MATRIX_MATH } }))
-		.pipe(uglify('owesome.min.js', { outSourceMap: DEBUG }))
+		.pipe(uglify('owesome.min.js', { outSourceMap: DEBUG, compress: { unsafe: true } }))
 		.pipe(gulp.dest(BUILD_DIR))
 		.pipe(connect.reload());
 });

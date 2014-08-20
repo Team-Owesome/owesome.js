@@ -42,10 +42,10 @@
         this._cachedRotation = this.rotation;
     };
 
-    Scene.prototype = Object.create(ow.DrawableContainer.prototype);
-    Scene.prototype.constructor = Scene;
+    var proto = Scene.prototype = Object.create(ow.DrawableContainer.prototype);
+    proto.constructor = Scene;
 
-    Scene.prototype.copy = function()
+    proto.copy = function()
     {
         // @if DEBUG
 
@@ -54,7 +54,7 @@
         // @endif
     };
 
-    Scene.prototype.draw = function(renderer)
+    proto.draw = function(renderer)
     {   
         this.width = renderer.width;
         this.height = renderer.height;
@@ -68,7 +68,7 @@
         }
     };
 
-    Scene.prototype.updateMatrix = function()
+    proto.updateMatrix = function()
     {
         var matrix = this.matrix;
 

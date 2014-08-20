@@ -74,7 +74,9 @@
         }
     };
 
-    Texture.prototype._checkPowerOfTwo = function()
+    var proto = Texture.prototype;
+
+    proto._checkPowerOfTwo = function()
     {
         // @if DEBUG
 
@@ -112,12 +114,12 @@
         this.height = height;
     };
 
-    Texture.prototype._isPowerOfTwo = function(number)
+    proto._isPowerOfTwo = function(number)
     {
         return (number & (number - 1)) == 0;
     };
 
-    Texture.prototype._nextHighestPowerOfTwo = function(number)
+    proto._nextHighestPowerOfTwo = function(number)
     {
         --number;
 
@@ -128,12 +130,12 @@
         return number + 1;
     };
 
-    Texture.prototype.getId = function()
+    proto.getId = function()
     {
         return this._id;
     };
 
-    Texture.prototype.getImage = function()
+    proto.getImage = function()
     {
         return this._internalImage;
     }

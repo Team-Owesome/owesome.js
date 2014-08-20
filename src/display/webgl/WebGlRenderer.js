@@ -40,7 +40,9 @@
         this.vertexBufferArray = new Float32Array(MAX_BATCH_SIZE * 24);
     };
 
-    DrawBatch.prototype.dispose = function()
+    var proto = DrawBatch.prototype;
+
+    proto.dispose = function()
     {
         this.size = 0;
         this.texture = null;
@@ -147,10 +149,10 @@
         this.setSize(width, height);
     };
 
-    WebGlRenderer.prototype = Object.create(ow.Renderer.prototype);
-    WebGlRenderer.prototype.constructor = WebGlRenderer;
+    proto = WebGlRenderer.prototype = Object.create(ow.Renderer.prototype);
+    proto.constructor = WebGlRenderer;
 
-    WebGlRenderer.prototype.drawTexture = function(texture, textureRect, transformMatrix, alpha, color)
+    proto.drawTexture = function(texture, textureRect, transformMatrix, alpha, color)
     {
         var textureId = texture.getId();
         var drawBatches = this.drawBatches;
@@ -229,7 +231,7 @@
         }
     };
 
-    WebGlRenderer.prototype.render = function(drawable)
+    proto.render = function(drawable)
     {
         drawable.draw(this);
 
@@ -260,7 +262,7 @@
         drawBatches.length = 0;
     };
 
-    WebGlRenderer.prototype._flushBatch = function(drawBatch)
+    proto._flushBatch = function(drawBatch)
     {
         var gl = this.gl;
 
@@ -280,7 +282,7 @@
         gl.drawElements(gl.TRIANGLES, 6 * drawBatch.size, gl.UNSIGNED_SHORT, 0);
     }
 
-    WebGlRenderer.prototype.setSize = function(width, height)
+    proto.setSize = function(width, height)
     {
         var gl = this.gl;
 
@@ -301,7 +303,7 @@
         gl.viewport(0, 0, this.width, this.height);
     };
 
-    WebGlRenderer.prototype.clear = function()
+    proto.clear = function()
     {
         var gl = this.gl;
 

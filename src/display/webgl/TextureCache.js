@@ -28,7 +28,9 @@
         this._context = context;
     };
 
-    TextureCache.prototype.getGlTexture = function(texture)
+    var proto = TextureCache.prototype;
+
+    proto.getGlTexture = function(texture)
     {
         var glTexture = this._glTextures[texture.getId()];
 

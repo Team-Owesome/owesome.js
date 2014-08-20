@@ -30,10 +30,10 @@
         this.matrix   = new ow.Matrix();
     };
 
-    DrawableContainer.prototype = Object.create(ow.Drawable.prototype);
-    DrawableContainer.prototype.constructor = DrawableContainer;
+    var proto = DrawableContainer.prototype = Object.create(ow.Drawable.prototype);
+    proto.constructor = DrawableContainer;
 
-    DrawableContainer.prototype.copy = function()
+    proto.copy = function()
     {
         // @if DEBUG
 
@@ -42,7 +42,7 @@
         // @endif
     };
 
-    DrawableContainer.prototype.add = function(drawable)
+    proto.add = function(drawable)
     {
         // @if DEBUG
 
@@ -62,7 +62,7 @@
         this.children.push(drawable);
     };
 
-    DrawableContainer.prototype.insert = function(drawable, index)
+    proto.insert = function(drawable, index)
     {
         // @if DEBUG
 
@@ -87,7 +87,7 @@
         this.children.splice(index, 0, drawable);
     };
 
-    DrawableContainer.prototype.remove = function(drawable)
+    proto.remove = function(drawable)
     {
         // @if DEBUG
 

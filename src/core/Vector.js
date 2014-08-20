@@ -28,22 +28,24 @@
         this.y = (y !== undefined) ? Number(y) : this.x;
     };
 
-    Vector.prototype.toArray = function()
+    var proto = Vector.prototype;
+
+    proto.toArray = function()
     {
         return [this.x, this.y];
     };
 
-    Vector.prototype.toNativeArray = function()
+    proto.toNativeArray = function()
     {
         return new Float32Array(this.toArray());
     };
 
-    Vector.prototype.copy = function()
+    proto.copy = function()
     {
         return new Vector(this.x, this.y);
     };
 
-    Vector.prototype.set = function(x, y)
+    proto.set = function(x, y)
     {
         this.x = x;
         this.y = y !== undefined ? y : x;
@@ -51,7 +53,7 @@
 
     // @if VECTOR_MATH
 
-    Vector.prototype.add = function(vectorOrNumber, optionalY)
+    proto.add = function(vectorOrNumber, optionalY)
     {
         if (vectorOrNumber instanceof Vector)
         {
@@ -67,12 +69,12 @@
         return this;
     };
 
-    Vector.prototype.addition = function(vectorOrNumber, optionalY)
+    proto.addition = function(vectorOrNumber, optionalY)
     {
         return this.clone().add(vectorOrNumber, optionalY);
     };
 
-    Vector.prototype.substract = function(vectorOrNumber, optionalY)
+    proto.substract = function(vectorOrNumber, optionalY)
     {
         if (vectorOrNumber instanceof Vector)
         {
@@ -88,12 +90,12 @@
         return this;
     };
 
-    Vector.prototype.substraction = function(vectorOrNumber, optionalY)
+    proto.substraction = function(vectorOrNumber, optionalY)
     {
         return this.clone().substract(vectorOrNumber, optionalY);
     };
 
-    Vector.prototype.multiply = function(vectorOrNumber, optionalY)
+    proto.multiply = function(vectorOrNumber, optionalY)
     {
         if (vectorOrNumber instanceof Vector)
         {
@@ -109,12 +111,12 @@
         return this;
     };
 
-    Vector.prototype.multiplication = function(vectorOrNumber, optionalY)
+    proto.multiplication = function(vectorOrNumber, optionalY)
     {
         return this.clone().multiplication(vectorOrNumber, optionalY);
     };
 
-    Vector.prototype.applyMatrix = function(matrix)
+    proto.applyMatrix = function(matrix)
     {
         var x = this.x;
         var y = this.y;
