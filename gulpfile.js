@@ -7,6 +7,7 @@ var uglify = require('gulp-uglifyjs');
 var rename = require('gulp-rename');
 var preprocess = require('gulp-preprocess');
 var path = require('path');
+var closureCompiler = require('gulp-closure-compiler');
 
 var argv = require('minimist')(process.argv.slice(2));
 
@@ -93,6 +94,18 @@ gulp.task('build', ['copy'], function()
 	return gulp.src(sources)
 		.pipe(preprocess({ context: { DEBUG: DEBUG, VECTOR_MATH: VECTOR_MATH, MATRIX_MATH: MATRIX_MATH } }))
 		.pipe(uglify('owesome.min.js', { outSourceMap: DEBUG, compress: { unsafe: true }, enclose: { this: 'window' } }))
+		/*.pipe(closureCompiler(
+		{
+			compilerPath: './compiler.jar',
+			fileName: 'owesome.min.js', 
+			compilerFlags:
+			{
+				compilation_level: 'ADVANCED_OPTIMIZATIONS',
+				source_map_format: 'V3',
+				create_source_map: BUILD_DIR + '/owesome.min.js.map',
+				language_in: 'ECMASCRIPT5_STRICT'
+			}
+		}))*/
 		.pipe(gulp.dest(BUILD_DIR))
 		.pipe(connect.reload());
 });

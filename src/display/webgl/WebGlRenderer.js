@@ -30,6 +30,9 @@ var DEFAULT_HEIGHT = 500;
 
 var drawBatchPool = [];
 
+/**
+ * @constructor
+ */
 var DrawBatch = function()
 {
     this.size = 0;
@@ -38,9 +41,7 @@ var DrawBatch = function()
     this.vertexBufferArray = new Float32Array(MAX_BATCH_SIZE * 24);
 };
 
-var proto = DrawBatch.prototype;
-
-proto.dispose = function()
+DrawBatch.prototype.dispose = function()
 {
     this.size = 0;
     this.texture = null;
@@ -60,6 +61,9 @@ DrawBatch.create = function(renderer)
     return drawBatch;
 };
 
+/**
+ * @constructor
+ */
 var WebGlRenderer = function(width, height)
 {
     width = width || DEFAULT_WIDTH;
@@ -147,10 +151,10 @@ var WebGlRenderer = function(width, height)
     this.setSize(width, height);
 };
 
-proto = WebGlRenderer.prototype = Object.create(Renderer.prototype);
-proto.constructor = WebGlRenderer;
+WebGlRenderer.prototype = Object.create(Renderer.prototype);
+WebGlRenderer.prototype.constructor = WebGlRenderer;
 
-proto.drawTexture = function(texture, textureRect, transformMatrix, alpha, color)
+WebGlRenderer.prototype.drawTexture = function(texture, textureRect, transformMatrix, alpha, color)
 {
     var textureId = texture.getId();
     var drawBatches = this.drawBatches;
@@ -229,7 +233,7 @@ proto.drawTexture = function(texture, textureRect, transformMatrix, alpha, color
     }
 };
 
-proto.render = function(drawable)
+WebGlRenderer.prototype.render = function(drawable)
 {
     drawable.draw(this);
 
@@ -260,7 +264,7 @@ proto.render = function(drawable)
     drawBatches.length = 0;
 };
 
-proto._flushBatch = function(drawBatch)
+WebGlRenderer.prototype._flushBatch = function(drawBatch)
 {
     var gl = this.gl;
 
@@ -280,7 +284,7 @@ proto._flushBatch = function(drawBatch)
     gl.drawElements(gl.TRIANGLES, 6 * drawBatch.size, gl.UNSIGNED_SHORT, 0);
 }
 
-proto.setSize = function(width, height)
+WebGlRenderer.prototype.setSize = function(width, height)
 {
     var gl = this.gl;
 
@@ -301,7 +305,7 @@ proto.setSize = function(width, height)
     gl.viewport(0, 0, this.width, this.height);
 };
 
-proto.clear = function()
+WebGlRenderer.prototype.clear = function()
 {
     var gl = this.gl;
 

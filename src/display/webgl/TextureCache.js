@@ -20,15 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+/**
+ * @constructor
+ */
 var TextureCache = function(context)
 {
     this._glTextures = [];
     this._context = context;
 };
 
-var proto = TextureCache.prototype;
-
-proto.getGlTexture = function(texture)
+TextureCache.prototype.getGlTexture = function(texture)
 {
     var glTexture = this._glTextures[texture.getId()];
 

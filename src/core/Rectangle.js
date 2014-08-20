@@ -20,6 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+/**
+ * @constructor
+ */
 var Rectangle = function(x, y, width, height)
 {
     this.x      = (x !== undefined) ? Number(x) : 0;
@@ -29,9 +32,7 @@ var Rectangle = function(x, y, width, height)
     this.height = (height !== undefined) ? Number(height) : 0;
 };
 
-var proto = Rectangle.prototype;
-
-proto.copy = function()
+Rectangle.prototype.copy = function()
 {
     return new Rectangle(this.x, this.y, this.width, this.height);
 };

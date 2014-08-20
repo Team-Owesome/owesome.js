@@ -20,6 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+/**
+ * @constructor
+ */
 var DrawableContainer = function()
 {
     ow.Drawable.call(this);
@@ -28,10 +31,10 @@ var DrawableContainer = function()
     this.matrix   = new Matrix();
 };
 
-var proto = DrawableContainer.prototype = Object.create(ow.Drawable.prototype);
-proto.constructor = DrawableContainer;
+DrawableContainer.prototype = Object.create(ow.Drawable.prototype);
+DrawableContainer.prototype.constructor = DrawableContainer;
 
-proto.copy = function()
+Drawable.prototype['copy'] = DrawableContainer.prototype.copy = function()
 {
     // @if DEBUG
 
@@ -40,7 +43,7 @@ proto.copy = function()
     // @endif
 };
 
-proto.add = function(drawable)
+Drawable.prototype['add'] = DrawableContainer.prototype.add = function(drawable)
 {
     // @if DEBUG
 
@@ -60,7 +63,7 @@ proto.add = function(drawable)
     this.children.push(drawable);
 };
 
-proto.insert = function(drawable, index)
+Drawable.prototype['insert'] = DrawableContainer.prototype.insert = function(drawable, index)
 {
     // @if DEBUG
 
@@ -85,7 +88,7 @@ proto.insert = function(drawable, index)
     this.children.splice(index, 0, drawable);
 };
 
-proto.remove = function(drawable)
+Drawable.prototype['remove'] = DrawableContainer.prototype.remove = function(drawable)
 {
     // @if DEBUG
 

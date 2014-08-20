@@ -20,6 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+/**
+ * @constructor
+ */
 var Sprite = function(texture, textureRect, position, rotation, scale, anchor, alpha, color)
 {
     ow.DrawableContainer.call(this);
@@ -43,10 +46,10 @@ var Sprite = function(texture, textureRect, position, rotation, scale, anchor, a
     this._cachedRotation = this.rotation;
 };
 
-var proto = Sprite.prototype = Object.create(DrawableContainer.prototype);
-proto.constructor = Sprite;
+Sprite.prototype = Object.create(DrawableContainer.prototype);
+Sprite.prototype.constructor = Sprite;
 
-proto.copy = function()
+Sprite.prototype.copy = function()
 {
     var copy = new ow.Sprite(this.texture,
                              this.textureRect.copy(),
@@ -68,7 +71,7 @@ proto.copy = function()
     return copy;
 };
 
-proto.draw = function(renderer)
+Sprite.prototype.draw = function(renderer)
 {
     this.updateMatrix();
 
@@ -88,7 +91,7 @@ proto.draw = function(renderer)
     }
 };
 
-proto.updateMatrix = function()
+Sprite.prototype.updateMatrix = function()
 {
     // Inspired by Pixi.js
     var parent = this.parent;

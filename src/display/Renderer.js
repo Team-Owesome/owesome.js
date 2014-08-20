@@ -20,11 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+/**
+ * @constructor
+ */
 var Renderer = function() {};
 
-var proto = Renderer.prototype;
-
-proto.render = function(scene)
+Renderer.prototype.render = function(scene)
 {
     // @if DEBUG
 
@@ -36,7 +37,7 @@ proto.render = function(scene)
     // @endif
 };
 
-proto.clear = function() {};
-proto.drawTexture = function(texture, textureRect, transformMatrix) {};
+Renderer.prototype.clear = function() {};
+Renderer.prototype.drawTexture = function(texture, textureRect, transformMatrix) {};
 
 ow.Renderer = Renderer;

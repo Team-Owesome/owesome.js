@@ -20,20 +20,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+/**
+ * @constructor
+ */
 var Matrix = function(a, b, tx, c, d, ty)
 {
     this.a = a != undefined ? Number(a) : 1;
     this.b = b != undefined ? Number(b) : 0;
     this.c = c != undefined ? Number(c) : 0;
     this.d = d != undefined ? Number(d) : 1;
-
     this.tx = tx != undefined ? Number(tx) : 0;
     this.ty = ty != undefined ? Number(ty) : 0;
 };
 
-var proto = Matrix.prototype;
-
-proto.toArray = function()
+Matrix.prototype.toArray = function()
 {
     var ar = this.array;
 
@@ -42,12 +42,12 @@ proto.toArray = function()
             0,      0,      1];
 };
 
-proto.toNativeArray = function()
+Matrix.prototype.toNativeArray = function()
 {
     return new Float32Array(this.toArray());
 };
 
-proto.copy = function()
+Matrix.prototype.copy = function()
 {
     return new Matrix(this.a, this.b, this.tx,
                       this.c, this.d, this.ty);
@@ -55,18 +55,18 @@ proto.copy = function()
 
 // @if MATRIX_MATH
 
-proto.translate = function(x, y)
+Matrix.prototype.translate = function(x, y)
 {
     return this.multiplyBy(1, 0, x,
                            0, 1, y);
 };
 
-proto.translation = function(x, y)
+Matrix.prototype.translation = function(x, y)
 {
     return this.copy().translate(x, y);
 };
 
-proto.rotate = function(angle)
+Matrix.prototype.rotate = function(angle)
 {
     var c = Math.cos(angle);
     var s = Math.sin(angle);
@@ -75,13 +75,13 @@ proto.rotate = function(angle)
                            s,  c,  0);
 };
 
-proto.scale = function(scaleX, scaleY)
+Matrix.prototype.scale = function(scaleX, scaleY)
 {
     return this.multiplyBy(scaleX, 0,      0,
                            0,      scaleY, 0);
 };
 
-proto.identity = function()
+Matrix.prototype.identity = function()
 {
     this.a = 1;
     this.b = 0;
@@ -94,7 +94,7 @@ proto.identity = function()
     return this;
 };
 
-proto.multiplyBy = function(a, b, tx, c, d, ty)
+Matrix.prototype.multiplyBy = function(a, b, tx, c, d, ty)
 {
     var ta = this.a; var tb = this.b; var ttx = this.tx;
     var tc = this.c; var td = this.d; var tty = this.ty;
@@ -110,12 +110,12 @@ proto.multiplyBy = function(a, b, tx, c, d, ty)
     return this;
 }
 
-proto.multiply = function(matrix)
+Matrix.prototype.multiply = function(matrix)
 {
     return this.multiplyBy(matrix.a, matrix.b, matrix.tx, matrix.c, matrix.d, matrix.ty);
 };
 
-proto.multiplication = function(matrix)
+Matrix.prototype.multiplication = function(matrix)
 {
     return this.copy().multiply(matrix);
 };

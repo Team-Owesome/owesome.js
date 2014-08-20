@@ -20,6 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+/**
+ * @constructor
+ */
 var Texture = function(imageOrSrc, loadedCallback, errorCallback)
 {
     this._id = Texture.CurrentId++;
@@ -36,10 +39,14 @@ var Texture = function(imageOrSrc, loadedCallback, errorCallback)
     {
         this._internalImage = imageOrSrc;
     }
+    // @if DEBUG
+
     else
     {
         throw new TypeError('Expected Image or String!');
     }
+
+    // @endif
 
     this.loaded = this._internalImage.complete;
 
@@ -72,9 +79,7 @@ var Texture = function(imageOrSrc, loadedCallback, errorCallback)
     }
 };
 
-var proto = Texture.prototype;
-
-proto._checkPowerOfTwo = function()
+Texture.prototype._checkPowerOfTwo = function()
 {
     // @if DEBUG
 
@@ -112,12 +117,12 @@ proto._checkPowerOfTwo = function()
     this.height = height;
 };
 
-proto._isPowerOfTwo = function(number)
+Texture.prototype._isPowerOfTwo = function(number)
 {
     return (number & (number - 1)) == 0;
 };
 
-proto._nextHighestPowerOfTwo = function(number)
+Texture.prototype._nextHighestPowerOfTwo = function(number)
 {
     --number;
 
@@ -128,12 +133,12 @@ proto._nextHighestPowerOfTwo = function(number)
     return number + 1;
 };
 
-proto.getId = function()
+Texture.prototype.getId = function()
 {
     return this._id;
 };
 
-proto.getImage = function()
+Texture.prototype.getImage = function()
 {
     return this._internalImage;
 }

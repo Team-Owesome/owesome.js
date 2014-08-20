@@ -20,6 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+/**
+ * @constructor
+ */
 var Scene = function(position, scale, rotation, anchor)
 {
     ow.DrawableContainer.call(this);
@@ -40,10 +43,10 @@ var Scene = function(position, scale, rotation, anchor)
     this._cachedRotation = this.rotation;
 };
 
-var proto = Scene.prototype = Object.create(DrawableContainer.prototype);
-proto.constructor = Scene;
+Scene.prototype = Object.create(DrawableContainer.prototype);
+Scene.prototype.constructor = Scene;
 
-proto.copy = function()
+Scene.prototype.copy = function()
 {
     // @if DEBUG
 
@@ -52,7 +55,7 @@ proto.copy = function()
     // @endif
 };
 
-proto.draw = function(renderer)
+Scene.prototype.draw = function(renderer)
 {   
     this.width = renderer.width;
     this.height = renderer.height;
@@ -66,7 +69,7 @@ proto.draw = function(renderer)
     }
 };
 
-proto.updateMatrix = function()
+Scene.prototype.updateMatrix = function()
 {
     var matrix = this.matrix;
 

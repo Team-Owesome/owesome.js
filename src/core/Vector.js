@@ -20,30 +20,31 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+/**
+ * @constructor
+ */
 var Vector = function(x, y)
 {
     this.x = (x !== undefined) ? Number(x) : 0;
     this.y = (y !== undefined) ? Number(y) : this.x;
 };
 
-var proto = Vector.prototype;
-
-proto.toArray = function()
+Vector.prototype.toArray = function()
 {
     return [this.x, this.y];
 };
 
-proto.toNativeArray = function()
+Vector.prototype.toNativeArray = function()
 {
     return new Float32Array(this.toArray());
 };
 
-proto.copy = function()
+Vector.prototype.copy = function()
 {
     return new Vector(this.x, this.y);
 };
 
-proto.set = function(x, y)
+Vector.prototype.set = function(x, y)
 {
     this.x = x;
     this.y = y !== undefined ? y : x;
@@ -51,7 +52,7 @@ proto.set = function(x, y)
 
 // @if VECTOR_MATH
 
-proto.add = function(vectorOrNumber, optionalY)
+Vector.prototype.add = function(vectorOrNumber, optionalY)
 {
     if (vectorOrNumber instanceof Vector)
     {
@@ -67,12 +68,12 @@ proto.add = function(vectorOrNumber, optionalY)
     return this;
 };
 
-proto.addition = function(vectorOrNumber, optionalY)
+Vector.prototype.addition = function(vectorOrNumber, optionalY)
 {
     return this.clone().add(vectorOrNumber, optionalY);
 };
 
-proto.substract = function(vectorOrNumber, optionalY)
+Vector.prototype.substract = function(vectorOrNumber, optionalY)
 {
     if (vectorOrNumber instanceof Vector)
     {
@@ -88,12 +89,12 @@ proto.substract = function(vectorOrNumber, optionalY)
     return this;
 };
 
-proto.substraction = function(vectorOrNumber, optionalY)
+Vector.prototype.substraction = function(vectorOrNumber, optionalY)
 {
     return this.clone().substract(vectorOrNumber, optionalY);
 };
 
-proto.multiply = function(vectorOrNumber, optionalY)
+Vector.prototype.multiply = function(vectorOrNumber, optionalY)
 {
     if (vectorOrNumber instanceof Vector)
     {
@@ -109,12 +110,12 @@ proto.multiply = function(vectorOrNumber, optionalY)
     return this;
 };
 
-proto.multiplication = function(vectorOrNumber, optionalY)
+Vector.prototype.multiplication = function(vectorOrNumber, optionalY)
 {
     return this.clone().multiplication(vectorOrNumber, optionalY);
 };
 
-proto.applyMatrix = function(matrix)
+Vector.prototype.applyMatrix = function(matrix)
 {
     var x = this.x;
     var y = this.y;

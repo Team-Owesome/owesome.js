@@ -20,15 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+/**
+ * @constructor
+ */
 var Drawable = function()
 {
     this.parent = null;
 };
 
-var proto = Drawable.prototype;
-
-proto.draw = function(renderer) {};
-proto.copy = function()
+Drawable.prototype.draw = function(renderer) {};
+Drawable.prototype.copy = function()
 { 
     // @if DEBUG
     
