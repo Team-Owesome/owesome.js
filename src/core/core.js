@@ -1,6 +1,8 @@
 'use strict';
 
 var ow = {};
+arguments[0].ow = ow;
+
 
 // @if DEBUG
 

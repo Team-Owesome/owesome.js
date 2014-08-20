@@ -20,113 +20,109 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-(function()
+var Vector = function(x, y)
 {
-    var Vector = function(x, y)
+    this.x = (x !== undefined) ? Number(x) : 0;
+    this.y = (y !== undefined) ? Number(y) : this.x;
+};
+
+var proto = Vector.prototype;
+
+proto.toArray = function()
+{
+    return [this.x, this.y];
+};
+
+proto.toNativeArray = function()
+{
+    return new Float32Array(this.toArray());
+};
+
+proto.copy = function()
+{
+    return new Vector(this.x, this.y);
+};
+
+proto.set = function(x, y)
+{
+    this.x = x;
+    this.y = y !== undefined ? y : x;
+};
+
+// @if VECTOR_MATH
+
+proto.add = function(vectorOrNumber, optionalY)
+{
+    if (vectorOrNumber instanceof Vector)
     {
-        this.x = (x !== undefined) ? Number(x) : 0;
-        this.y = (y !== undefined) ? Number(y) : this.x;
-    };
-
-    var proto = Vector.prototype;
-
-    proto.toArray = function()
+        this.x += vectorOrNumber.x;
+        this.y += vectorOrNumber.y;
+    }
+    else
     {
-        return [this.x, this.y];
-    };
+        this.x += Number(vectorOrNumber);
+        this.y += Number(optionalY || vectorOrNumber);
+    }
 
-    proto.toNativeArray = function()
+    return this;
+};
+
+proto.addition = function(vectorOrNumber, optionalY)
+{
+    return this.clone().add(vectorOrNumber, optionalY);
+};
+
+proto.substract = function(vectorOrNumber, optionalY)
+{
+    if (vectorOrNumber instanceof Vector)
     {
-        return new Float32Array(this.toArray());
-    };
-
-    proto.copy = function()
+        this.x -= vectorOrNumber.x;
+        this.y -= vectorOrNumber.y;
+    }
+    else
     {
-        return new Vector(this.x, this.y);
-    };
+        this.x -= Number(vectorOrNumber);
+        this.y -= Number(optionalY || vectorOrNumber);
+    }
 
-    proto.set = function(x, y)
+    return this;
+};
+
+proto.substraction = function(vectorOrNumber, optionalY)
+{
+    return this.clone().substract(vectorOrNumber, optionalY);
+};
+
+proto.multiply = function(vectorOrNumber, optionalY)
+{
+    if (vectorOrNumber instanceof Vector)
     {
-        this.x = x;
-        this.y = y !== undefined ? y : x;
-    };
-
-    // @if VECTOR_MATH
-
-    proto.add = function(vectorOrNumber, optionalY)
+        this.x *= vectorOrNumber.x;
+        this.y *= vectorOrNumber.y;
+    }
+    else
     {
-        if (vectorOrNumber instanceof Vector)
-        {
-            this.x += vectorOrNumber.x;
-            this.y += vectorOrNumber.y;
-        }
-        else
-        {
-            this.x += Number(vectorOrNumber);
-            this.y += Number(optionalY || vectorOrNumber);
-        }
+        this.x *= Number(vectorOrNumber);
+        this.y *= Number(optionalY || vectorOrNumber);
+    }
 
-        return this;
-    };
+    return this;
+};
 
-    proto.addition = function(vectorOrNumber, optionalY)
-    {
-        return this.clone().add(vectorOrNumber, optionalY);
-    };
+proto.multiplication = function(vectorOrNumber, optionalY)
+{
+    return this.clone().multiplication(vectorOrNumber, optionalY);
+};
 
-    proto.substract = function(vectorOrNumber, optionalY)
-    {
-        if (vectorOrNumber instanceof Vector)
-        {
-            this.x -= vectorOrNumber.x;
-            this.y -= vectorOrNumber.y;
-        }
-        else
-        {
-            this.x -= Number(vectorOrNumber);
-            this.y -= Number(optionalY || vectorOrNumber);
-        }
+proto.applyMatrix = function(matrix)
+{
+    var x = this.x;
+    var y = this.y;
 
-        return this;
-    };
+    this.x = (matrix.a * x) + (matrix.b * y) + matrix.tx;
+    this.y = (matrix.c * x) + (matrix.d * y) + matrix.ty;
+};
 
-    proto.substraction = function(vectorOrNumber, optionalY)
-    {
-        return this.clone().substract(vectorOrNumber, optionalY);
-    };
+// @endif
 
-    proto.multiply = function(vectorOrNumber, optionalY)
-    {
-        if (vectorOrNumber instanceof Vector)
-        {
-            this.x *= vectorOrNumber.x;
-            this.y *= vectorOrNumber.y;
-        }
-        else
-        {
-            this.x *= Number(vectorOrNumber);
-            this.y *= Number(optionalY || vectorOrNumber);
-        }
-
-        return this;
-    };
-
-    proto.multiplication = function(vectorOrNumber, optionalY)
-    {
-        return this.clone().multiplication(vectorOrNumber, optionalY);
-    };
-
-    proto.applyMatrix = function(matrix)
-    {
-        var x = this.x;
-        var y = this.y;
-
-        this.x = (matrix.a * x) + (matrix.b * y) + matrix.tx;
-        this.y = (matrix.c * x) + (matrix.d * y) + matrix.ty;
-    };
-
-    // @endif
-
-    ow.Vector = Vector;
-
-})();
+ow.Vector = Vector;

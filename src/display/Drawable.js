@@ -20,24 +20,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-(function()
+var Drawable = function()
 {
-    var Drawable = function()
-    {
-        this.parent = null;
-    };
+    this.parent = null;
+};
 
-    var proto = Drawable.prototype;
+var proto = Drawable.prototype;
 
-    proto.draw = function(renderer) {};
-    proto.copy = function()
-    { 
-        // @if DEBUG
-        
-        throw new Error('Copy is not implemented on ow.Drawable.');
+proto.draw = function(renderer) {};
+proto.copy = function()
+{ 
+    // @if DEBUG
+    
+    throw new Error('Copy is not implemented on ow.Drawable.');
 
-        // @endif
-    };
+    // @endif
+};
 
-    ow.Drawable = Drawable;
-})();
+ow.Drawable = Drawable;

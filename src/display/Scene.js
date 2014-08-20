@@ -20,93 +20,90 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-(function()
+var Scene = function(position, scale, rotation, anchor)
 {
-    var Scene = function(position, scale, rotation, anchor)
+    ow.DrawableContainer.call(this);
+
+    this.position    = position    || new Vector();
+    this.scale       = scale       || new Vector(1);
+    this.rotation    = rotation    || 0;
+    this.anchor      = anchor      || new Vector(0.5);
+
+    this.width = 0;
+    this.height = 0;
+
+    var radRotation = this.rotation * (Math.PI / 180.0);
+
+    this._sr = Math.sin(radRotation);
+    this._cr = Math.cos(radRotation);
+
+    this._cachedRotation = this.rotation;
+};
+
+var proto = Scene.prototype = Object.create(DrawableContainer.prototype);
+proto.constructor = Scene;
+
+proto.copy = function()
+{
+    // @if DEBUG
+
+    throw new Error('Copy is not implemented on ow.Scene.');
+
+    // @endif
+};
+
+proto.draw = function(renderer)
+{   
+    this.width = renderer.width;
+    this.height = renderer.height;
+
+    this.updateMatrix();
+
+    for (var i = 0; i < this.children.length; ++i)
     {
-        ow.DrawableContainer.call(this);
+        var child = this.children[i];
+        child.draw(renderer);
+    }
+};
 
-        this.position    = position    || new ow.Vector();
-        this.scale       = scale       || new ow.Vector(1);
-        this.rotation    = rotation    || 0;
-        this.anchor      = anchor      || new ow.Vector(0.5);
+proto.updateMatrix = function()
+{
+    var matrix = this.matrix;
 
-        this.width = 0;
-        this.height = 0;
+    var ax = (this.width * this.anchor.x);
+    var ay = (this.height * this.anchor.y);
 
+    if (this._cachedRotation != this.rotation)
+    {
         var radRotation = this.rotation * (Math.PI / 180.0);
 
         this._sr = Math.sin(radRotation);
         this._cr = Math.cos(radRotation);
 
         this._cachedRotation = this.rotation;
-    };
+    }
 
-    var proto = Scene.prototype = Object.create(ow.DrawableContainer.prototype);
-    proto.constructor = Scene;
+    var sr = this._sr;
+    var cr = this._cr;
 
-    proto.copy = function()
-    {
-        // @if DEBUG
+    var sx = this.scale.x;
+    var sy = this.scale.y;
 
-        throw new Error('Copy is not implemented on ow.Scene.');
+    var a00 = cr * sx,
+        a01 = -sr * sy,
+        a10 = sr * sx,
+        a11 = cr * sy;
 
-        // @endif
-    };
+    var a02 = this.position.x - a00 * ax - ay * a01,
+        a12 = this.position.y - a11 * ay - ax * a10;
 
-    proto.draw = function(renderer)
-    {   
-        this.width = renderer.width;
-        this.height = renderer.height;
+    matrix.a = a00;
+    matrix.b = a01;
+    matrix.tx = a02 + (this.width * this.anchor.x);
+    
+    matrix.c = a10;
+    matrix.d = a11;
+    matrix.ty = a12 + (this.height * this.anchor.y);
+};
 
-        this.updateMatrix();
-
-        for (var i = 0; i < this.children.length; ++i)
-        {
-            var child = this.children[i];
-            child.draw(renderer);
-        }
-    };
-
-    proto.updateMatrix = function()
-    {
-        var matrix = this.matrix;
-
-        var ax = (this.width * this.anchor.x);
-        var ay = (this.height * this.anchor.y);
-
-        if (this._cachedRotation != this.rotation)
-        {
-            var radRotation = this.rotation * (Math.PI / 180.0);
-
-            this._sr = Math.sin(radRotation);
-            this._cr = Math.cos(radRotation);
-
-            this._cachedRotation = this.rotation;
-        }
-
-        var sr = this._sr;
-        var cr = this._cr;
-
-        var sx = this.scale.x;
-        var sy = this.scale.y;
-
-        var a00 = cr * sx,
-            a01 = -sr * sy,
-            a10 = sr * sx,
-            a11 = cr * sy;
-
-        var a02 = this.position.x - a00 * ax - ay * a01,
-            a12 = this.position.y - a11 * ay - ax * a10;
-
-        matrix.a = a00;
-        matrix.b = a01;
-        matrix.tx = a02 + (this.width * this.anchor.x);
-        
-        matrix.c = a10;
-        matrix.d = a11;
-        matrix.ty = a12 + (this.height * this.anchor.y);
-    };
-
-    ow.Scene = Scene;
-})();
+ow.Scene = Scene;

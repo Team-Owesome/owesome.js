@@ -20,26 +20,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-(function()
+var Renderer = function() {};
+
+var proto = Renderer.prototype;
+
+proto.render = function(scene)
 {
-    var Renderer = function() {};
+    // @if DEBUG
 
-    var proto = Renderer.prototype;
-
-    proto.render = function(scene)
+    if (!(scene instanceof Scene))
     {
-        // @if DEBUG
+        throw new TypeError('scene is not of type ow.Scene.');
+    }
 
-        if (!(scene instanceof ow.Scene))
-        {
-            throw new TypeError('scene is not of type ow.Scene.');
-        }
+    // @endif
+};
 
-        // @endif
-    };
+proto.clear = function() {};
+proto.drawTexture = function(texture, textureRect, transformMatrix) {};
 
-    proto.clear = function() {};
-    proto.drawTexture = function(texture, textureRect, transformMatrix) {};
-
-    ow.Renderer = Renderer;
-})();
+ow.Renderer = Renderer;

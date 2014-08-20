@@ -20,102 +20,97 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-(function()
+var DrawableContainer = function()
 {
-    var DrawableContainer = function()
+    ow.Drawable.call(this);
+
+    this.children = [];
+    this.matrix   = new Matrix();
+};
+
+var proto = DrawableContainer.prototype = Object.create(ow.Drawable.prototype);
+proto.constructor = DrawableContainer;
+
+proto.copy = function()
+{
+    // @if DEBUG
+
+    throw new Error('Copy is not implemented on ow.DrawableContainer.');
+
+    // @endif
+};
+
+proto.add = function(drawable)
+{
+    // @if DEBUG
+
+    if (!(drawable instanceof Drawable))
     {
-        ow.Drawable.call(this);
+        throw new Error('drawable has to be instance of ow.Drawable');
+    }
 
-        this.children = [];
-        this.matrix   = new ow.Matrix();
-    };
+    // @endif
 
-    var proto = DrawableContainer.prototype = Object.create(ow.Drawable.prototype);
-    proto.constructor = DrawableContainer;
-
-    proto.copy = function()
+    if (drawable.parent)
     {
-        // @if DEBUG
+        drawable.parent.remove(drawable);
+    }
 
-        throw new Error('Copy is not implemented on ow.DrawableContainer.');
+    drawable.parent = this;
+    this.children.push(drawable);
+};
 
-        // @endif
-    };
+proto.insert = function(drawable, index)
+{
+    // @if DEBUG
 
-    proto.add = function(drawable)
+    if (!(drawable instanceof Drawable))
     {
-        // @if DEBUG
+        throw new Error('drawable has to be instance of ow.Drawable');
+    }
 
-        if (!(drawable instanceof ow.Drawable))
-        {
-            throw new Error('drawable has to be instance of ow.Drawable');
-        }
-
-        // @endif
-
-        if (drawable.parent)
-        {
-            drawable.parent.remove(drawable);
-        }
-
-        drawable.parent = this;
-        this.children.push(drawable);
-    };
-
-    proto.insert = function(drawable, index)
+    if (index > this.children.length)
     {
-        // @if DEBUG
+        throw new RangeError('Index is out of range.');
+    }
 
-        if (!(drawable instanceof ow.Drawable))
-        {
-            throw new Error('drawable has to be instance of ow.Drawable');
-        }
+    // @endif
 
-        if (index > this.children.length)
-        {
-            throw new RangeError('Index is out of range.');
-        }
-
-        // @endif
-
-        if (drawable.parent)
-        {
-            drawable.parent.remove(drawable);
-        }
-
-        drawable.parent = this;
-        this.children.splice(index, 0, drawable);
-    };
-
-    proto.remove = function(drawable)
+    if (drawable.parent)
     {
-        // @if DEBUG
+        drawable.parent.remove(drawable);
+    }
 
-        if (!(drawable instanceof ow.Drawable))
-        {
-            throw new Error('drawable has to be instance of ow.Drawable');
-        }
+    drawable.parent = this;
+    this.children.splice(index, 0, drawable);
+};
 
-        // @endif
+proto.remove = function(drawable)
+{
+    // @if DEBUG
 
-        var index = this.children.indexOf(drawable);
+    if (!(drawable instanceof Drawable))
+    {
+        throw new Error('drawable has to be instance of ow.Drawable');
+    }
 
-        if (index !== -1)
-        {
-            drawable.parent = null;
-            this.children.splice(index, 1);
-        }
-        // @if DEBUG
+    // @endif
 
-        else
-        {
-            throw new Error('drawable has to be a child of this ow.DrawableContainer.');
-        }
+    var index = this.children.indexOf(drawable);
 
-        // @endif
-    };
+    if (index !== -1)
+    {
+        drawable.parent = null;
+        this.children.splice(index, 1);
+    }
+    // @if DEBUG
 
-    ow.DrawableContainer = DrawableContainer;
-})();
+    else
+    {
+        throw new Error('drawable has to be a child of this ow.DrawableContainer.');
+    }
 
+    // @endif
+};
 
+ow.DrawableContainer = DrawableContainer;
