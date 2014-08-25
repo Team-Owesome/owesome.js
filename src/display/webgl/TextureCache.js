@@ -47,7 +47,7 @@ TextureCache.prototype.getGlTexture = function(texture)
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
         
-        gl.generateMipmap(gl.TEXTURE_2D);
+        //gl.generateMipmap(gl.TEXTURE_2D);
         gl.bindTexture(gl.TEXTURE_2D, null);
 
         this._glTextures[texture.getId()] = glTexture;
